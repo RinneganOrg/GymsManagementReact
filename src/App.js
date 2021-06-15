@@ -9,15 +9,22 @@ import TheHeader from './components/TheHeader'
 import TheRouter from './components/TheRouter';
 import ProvideAuth from './components/ProvideAuth'
 import AuthButton from './components/AuthButton'
+import { Grid } from 'semantic-ui-react'
 
 export default function App() {
   return (
     <ProvideAuth>
       <Router>
         <TheHeader />
-        <Toolbar />
-        <AuthButton />
-        <TheRouter />
+        <Grid columns={2}>
+          <Grid.Column>
+            <Toolbar />
+          </Grid.Column>
+          <Grid.Column>
+            <AuthButton />
+            <TheRouter />
+          </Grid.Column>
+        </Grid>
       </Router>
     </ProvideAuth>
   )

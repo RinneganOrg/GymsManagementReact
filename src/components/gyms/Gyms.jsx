@@ -1,19 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
-  Switch,
-  Route,
   Link,
   useRouteMatch
 } from "react-router-dom";
-import Gym from './Gym'
+import { useDispatch, useSelector } from 'react-redux'
+import { addGym } from '../../store/actions/gyms'
+// To Do 
+// 1. show links from store
+// 2. implement cards/list from store
+// 3. fct de search
+// 4. ordonare
+// 5. filtrare
 
 const Gyms = () => {
 
-  let { path, url } = useRouteMatch();
+  const selectGyms = state => state.gyms
+  const dispatch = useDispatch()
+  const onAddGym = () => dispatch(addGym('WorldClass'))
+  const gyms = useSelector(selectGyms)
+  const showStore = () => console.log(gyms)
 
+  useEffect(
+    () => console.log("hi", gyms),
+    [gyms],
+  );
+  let { path, url } = useRouteMatch();
+  console.log("url gym", url)
+  console.log("path gym", path)
   return (
     <div>
       <h2>Gyms</h2>
+      <h3>Please select a gym.</h3>
       <ul>
         <li>
           <Link to={`${url}/WorldClass`}>WorldClass</Link>
@@ -25,15 +42,8 @@ const Gyms = () => {
           <Link to={`${url}/SanGym`}>SanGym</Link>
         </li>
       </ul>
-
-      <Switch>
-        <Route exact path={path}>
-          <h3>Please select a gym.</h3>
-        </Route>
-        <Route path={`${path}/:gymId`}>
-          <Gym />
-        </Route>
-      </Switch>
+      <button onClick={onAddGym}>Add gym</button>
+      <button onClick={showStore}>Show store</button>
     </div>
   );
 }

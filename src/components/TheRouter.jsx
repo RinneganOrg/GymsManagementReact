@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   Switch,
-  Route
+  Route,
+  useRouteMatch
 } from "react-router-dom";
 import About from "./about/About"
 import Login from './login/Login'
@@ -10,10 +11,13 @@ import Trainers from './trainers/Trainers'
 import Users from './users/Users'
 import Suppliers from './suppliers/Suppliers'
 import Products from './products/Products'
+import Gym from './gyms/Gym'
 import PrivateRoute from './PrivateRoute'
 
 const TheRouter = () => {
 
+  let { path, url } = useRouteMatch();
+  console.log("path header", path)
   return (
     <Switch>
       <Route path="/about">
@@ -22,7 +26,7 @@ const TheRouter = () => {
       <Route path="/login">
         <Login />
       </Route>
-      <Route path="/gyms">
+      <Route exact path="/gyms">
         <Gyms />
       </Route>
       <Route path="/trainers">
@@ -36,6 +40,9 @@ const TheRouter = () => {
       </PrivateRoute>
       <Route path="/products">
         <Products />
+      </Route>
+      <Route path="/gyms/:gymId">
+        <Gym />
       </Route>
     </Switch>
   )

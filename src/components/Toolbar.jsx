@@ -1,13 +1,15 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Menu } from 'semantic-ui-react'
+// TO DO
+// 1. options for pages
+// 2. add user
+// 3. buton de save cancel add edit
 
-export default class Toolbar extends Component {
-  state = {}
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+const Toolbar = () => {
 
-  render() {
-    const { activeItem } = this.state
-
+  const [activeItem, setActiveItem] = useState({});
+  const handleItemClick = (e, { name }) => setActiveItem(name)
+  console.log(activeItem)
     return (
       <Menu vertical>
         <Menu.Item>
@@ -17,12 +19,12 @@ export default class Toolbar extends Component {
             <Menu.Item
               name='enterprise'
               active={activeItem === 'enterprise'}
-              onClick={this.handleItemClick}
+              onClick={handleItemClick}
             />
             <Menu.Item
               name='consumer'
               active={activeItem === 'consumer'}
-              onClick={this.handleItemClick}
+              onClick={handleItemClick}
             />
           </Menu.Menu>
         </Menu.Item>
@@ -34,21 +36,21 @@ export default class Toolbar extends Component {
             <Menu.Item
               name='rails'
               active={activeItem === 'rails'}
-              onClick={this.handleItemClick}
+              onClick={handleItemClick}
             />
             <Menu.Item
               name='python'
               active={activeItem === 'python'}
-              onClick={this.handleItemClick}
+              onClick={handleItemClick}
             />
             <Menu.Item
               name='php'
               active={activeItem === 'php'}
-              onClick={this.handleItemClick}
+              onClick={handleItemClick}
             />
           </Menu.Menu>
         </Menu.Item>
       </Menu>
     )
-  }
 }
+export default Toolbar
