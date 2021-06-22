@@ -5,7 +5,6 @@ const initialState = {
 }
 
 export default function addProduct(state = initialState, action) {
-  console.log(action)
   console.log(state)
   switch (action.type) {
     case 'ADD_PRODUCT':

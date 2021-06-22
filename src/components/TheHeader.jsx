@@ -1,33 +1,17 @@
 import React, { useState } from 'react';
 import { Menu, Segment } from 'semantic-ui-react'
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 // TO DO
-// 1. de scos login si about
+// 1. de scos login si about done
 const TheHeader = () => {
 
-  const [activeItem, setActiveItem] = useState('About');
+  const [activeItem, setActiveItem] = useState('Gyms');
   const handleItemClick = (e, { name }) => setActiveItem(name)
   console.log(activeItem)
-  let { path, url } = useRouteMatch();
-  console.log("url header", url)
-  console.log("url path", path)
+  
   return (
     <Segment >
       <Menu secondary>
-        <Menu.Item
-          name='About'
-          active={activeItem === 'About'}
-          onClick={handleItemClick}
-          as={Link} to="/about">About
-      </Menu.Item>
-
-        <Menu.Item
-          name='Login'
-          active={activeItem === 'Login'}
-          onClick={handleItemClick}
-          as={Link} to="/login">Login
-      </Menu.Item>
-
         <Menu.Item
           name='Gyms'
           active={activeItem === 'Gyms'}

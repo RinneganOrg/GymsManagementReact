@@ -1,13 +1,20 @@
 export function setGyms(gyms) {
-  return { 
+  return {
     type: 'SET_GYMS',
-    gyms 
+    gyms
   }
 }
 
 export function addGym(gym) {
-  return { 
+  return {
     type: 'ADD_GYM',
+    gym
+  }
+}
+
+export function editGym(gym) {
+  return {
+    type: 'EDIT_GYM',
     gym
   }
 }

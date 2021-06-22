@@ -4,6 +4,8 @@ import gyms from './gyms';
 import users from './users';
 import suppliers from './suppliers';
 import products from './products';
+import comments from './comments';
+import toolbar from './toolbar';
 
 console.log({gyms})
 export default combineReducers({
@@ -11,5 +13,7 @@ export default combineReducers({
   trainers,
   users,
   suppliers,
-  products
+  products,
+  comments,
+  toolbar
 });

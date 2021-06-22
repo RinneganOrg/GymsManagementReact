@@ -17,7 +17,7 @@ export default function App() {
       <Router>
         <TheHeader />
         <Grid columns={2}>
-          <Grid.Column>
+          <Grid.Column width={4}>
             <Toolbar />
           </Grid.Column>
           <Grid.Column>
