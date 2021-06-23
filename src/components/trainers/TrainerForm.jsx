@@ -5,24 +5,25 @@ import SaveButton from '../buttons/SaveButton';
 import CancelButton from '../buttons/CancelButton';
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addGym, editGym } from '../../store/actions/gyms'
+import { addTrainer, editTrainer } from '../../store/actions/trainers'
 
-const GymForm = (props) => {
+const TrainerForm = (props) => {
   const params = useParams()
-  const gymToEdit = useSelector(state =>
-    state.gyms.gyms.find(gym => gym.id + '' === params.gymId)
+  const trainerToEdit = useSelector(state =>
+    state.trainers.trainers.find(trainer => trainer.id + '' === params.trainerId)
   )
-  const [id, setId] = useState(gymToEdit ? gymToEdit.id : '');
-  const [name, setName] = useState(gymToEdit ? gymToEdit.name : '');
-  const [address, setAddress] = useState(gymToEdit ? gymToEdit.address : '');
-  const [description, setDescription] = useState(gymToEdit ? gymToEdit.description : '');
-  const [image, setImage] = useState(gymToEdit ? gymToEdit.image : '');
-  let gymToEditTags = ''
+  // const [id, setId] = useState(trainerToEdit ? trainerToEdit.id : '');
+  const id = trainerToEdit ? trainerToEdit.id : ''
+  const gymId = trainerToEdit ? trainerToEdit.gymId : params.gymId
+  const [name, setName] = useState(trainerToEdit ? trainerToEdit.name : '')
+  const [description, setDescription] = useState(trainerToEdit ? trainerToEdit.description : '')
+  const [image, setImage] = useState(trainerToEdit ? trainerToEdit.image : '')
+  let trainerToEditTags = ''
 
-  if (gymToEdit) {
-    gymToEditTags = gymToEdit.tags.join(", ")
+  if (trainerToEdit) {
+    trainerToEditTags = trainerToEdit.tags.join(", ")
   }
-  const [tags, setTags] = useState(gymToEditTags);
+  const [tags, setTags] = useState(trainerToEditTags);
 
   const location = useLocation()
   const dispatch = useDispatch()
@@ -32,9 +33,6 @@ const GymForm = (props) => {
 
   const changeName = (event) => {
     setName(event.target.value)
-  }
-  const changeAddress = (event) => {
-    setAddress(event.target.value)
   }
   const changeDescription = (event) => {
     setDescription(event.target.value)
@@ -47,13 +45,14 @@ const GymForm = (props) => {
   }
   const onSubmit = () => {
     let tagsArray = tags.split(',');
-    let gym = { name, address, description, image, tags: tagsArray }
+    let trainer = { gymId, name, description, image, tags: tagsArray }
+
     if (props.mode === "add") {
-      dispatch(addGym(gym))
+      dispatch(addTrainer(trainer))
     }
     else if (props.mode === "edit") {
-      let gymEdited = { id, name, address, description, image, tags: tagsArray }
-      dispatch(editGym(gymEdited))
+      let trainerEdited = { id, name, description, image, tags: tagsArray }
+      dispatch(editTrainer(trainerEdited))
     }
   }
 
@@ -62,10 +61,6 @@ const GymForm = (props) => {
       <Form.Field>
         <label>Name</label>
         <input placeholder='Name' value={name} onChange={changeName} />
-      </Form.Field>
-      <Form.Field>
-        <label>Address</label>
-        <input placeholder='Address' value={address} onChange={changeAddress} />
       </Form.Field>
       <Form.Field>
         <label>Description</label>
@@ -91,4 +86,4 @@ const GymForm = (props) => {
 
   );
 }
-export default GymForm;
+export default TrainerForm;

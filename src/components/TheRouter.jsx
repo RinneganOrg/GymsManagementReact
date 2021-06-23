@@ -8,17 +8,19 @@ import About from "./about/About"
 import Login from './login/Login'
 import Gyms from './gyms/Gyms'
 import Trainers from './trainers/Trainers'
+import Trainer from './trainers/Trainer'
 import Users from './users/Users'
 import Profile from './profile/Profile'
-import Suppliers from './suppliers/Suppliers'
-import Products from './products/Products'
 import Gym from './gyms/Gym'
 import GymForm from './gyms/GymForm'
+import TrainerForm from './trainers/TrainerForm'
+import Courses from './courses/Courses'
+import Course from './courses/Course'
 import PrivateRoute from './PrivateRoute'
 
 const TheRouter = () => {
-
   let { path } = useRouteMatch();
+
   return (
     <Switch>
       <Route path="/about">
@@ -30,8 +32,17 @@ const TheRouter = () => {
       <Route exact path="/gyms">
         <Gyms />
       </Route>
-      <Route path="/trainers">
+      <Route exact path="/trainers">
         <Trainers />
+      </Route>
+      <Route path="/trainers/add">
+        <TrainerForm mode="add" />
+      </Route>
+      <Route exact path="/trainers/:trainerId">
+        <Trainer />
+      </Route>
+      <Route path="/trainers/:trainerId/edit">
+        <TrainerForm mode="edit"/>
       </Route>
       <PrivateRoute path="/users">
         <Users />
@@ -39,11 +50,11 @@ const TheRouter = () => {
       <PrivateRoute path="/profile">
         <Profile />
       </PrivateRoute>
-      <PrivateRoute path="/suppliers">
-        <Suppliers />
-      </PrivateRoute>
-      <Route path="/products">
-        <Products />
+      <Route exact path="/courses">
+        <Courses />
+      </Route>
+      <Route exact path="/courses/:courseId">
+        <Course />
       </Route>
       <Route path="/gyms/add">
         <GymForm mode="add"/>
@@ -54,11 +65,23 @@ const TheRouter = () => {
       <Route path="/gyms/:gymId/edit">
         <GymForm mode="edit"/>
       </Route>
-      <Route path="/gyms/:gymId/trainers">
+      <Route exact path="/gyms/:gymId/trainers">
         <Trainers />
       </Route>
-      <Route path="/gyms/:gymId/suppliers">
-        <Suppliers />
+      <Route path="/gyms/:gymId/trainers/add">
+        <TrainerForm mode="add"/>
+      </Route>
+      <Route exact path="/gyms/:gymId/trainers/:trainerId">
+        <Trainer />
+      </Route>
+      <Route path="/gyms/:gymId/trainers/:trainerId/edit">
+        <TrainerForm mode="edit" />
+      </Route>
+      <Route exact path="/gyms/:gymId/courses">
+        <Courses />
+      </Route>
+      <Route exact path="/gyms/:gymId/courses/:courseId">
+        <Course />
       </Route>
     </Switch>
   )

@@ -39,7 +39,6 @@ const initialState = {
 }
 
 export default function addGym(state = initialState, action) {
-  console.log(state)
   switch (action.type) {
     case 'ADD_GYM':
       return { ...state, gyms: [...state.gyms, {...action.gym, id: state.gyms.length + 1}] }

@@ -7,7 +7,6 @@ const TheHeader = () => {
 
   const [activeItem, setActiveItem] = useState('Gyms');
   const handleItemClick = (e, { name }) => setActiveItem(name)
-  console.log(activeItem)
   
   return (
     <Segment >
@@ -31,20 +30,6 @@ const TheHeader = () => {
           active={activeItem === 'Users'}
           onClick={handleItemClick}
           as={Link} to="/users">Users
-        </Menu.Item>
-
-        <Menu.Item
-          name='Suppliers'
-          active={activeItem === 'Suppliers'}
-          onClick={handleItemClick}
-          as={Link} to="/suppliers">Suppliers
-        </Menu.Item>
-
-        <Menu.Item
-          name='Products'
-          active={activeItem === 'Products'}
-          onClick={handleItemClick}
-          as={Link} to="/products">Products
         </Menu.Item>
       </Menu>
     </Segment>

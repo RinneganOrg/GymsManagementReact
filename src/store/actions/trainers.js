@@ -11,3 +11,10 @@ export function addTrainer(trainer) {
     trainer
   }
 }
+
+export function editTrainer(trainer) {
+  return {
+    type: 'EDIT_TRAINER',
+    trainer
+  }
+}

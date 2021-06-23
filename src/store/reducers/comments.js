@@ -2,33 +2,32 @@ const initialState = {
   comments: [
     {
       id: 1,
-      gymId: 1,
-      trainerId: null,
+      gymId: null,
+      trainerId: 1,
       userId: 1,
-      comment: "Great",
+      comment: "Great Chilly",
       rating: 3
     },
     {
       id: 2,
       gymId: 1,
-      trainerId: null,
+      trainerId: 1,
       userId: 2,
-      comment: "Amazing",
+      comment: "Amazing Chilly at WorldClass",
       rating: 4
     },
     {
       id: 3,
       gymId: 2,
-      trainerId: null,
+      trainerId: 2,
       userId: 3,
-      comment: "Wonderful",
+      comment: "Wonderful Reece at FitClass",
       rating: 5
     }
   ]
 }
 
 export default function addComment(state = initialState, action) {
-  console.log(state)
   switch (action.type) {
     case 'ADD_COMMENT':
       return { ...state, comments: [...state.comments, { ...action.comment, id: state.comments.length + 1 }] }

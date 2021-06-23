@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Link,
   useRouteMatch,
   useLocation
 } from "react-router-dom";
 import { useSelector } from 'react-redux'
-import { Card, Image, List, Menu, Rating } from 'semantic-ui-react'
+import { Card, Image, List, Menu, Rating, Input, Dropdown } from 'semantic-ui-react'
 import AddButton from '../buttons/AddButton';
 import { Portal } from 'react-portal'
 
-// To Do 
-// 1. show links from store done
-// 2. implement cards/list from store done
-// 3. fct de search done
-// 4. ordonare done
-// 5. filtrare left the location
-
 const Gyms = () => {
-  console.log(document.getElementById("operationSection"))
   const location = useLocation()
-  console.log("location", location.pathname)
   const selectGyms = state => state.gyms
   const selectIsToolbarReady = state => state.toolbar
   const { gyms } = useSelector(selectGyms)
   const { isToolbarReady } = useSelector(selectIsToolbarReady)
-  console.log(isToolbarReady)
-  const showStore = () => console.log(gyms)
   const [displayStyle, setDisplayStyle] = useState(false);
   const [gymSearched, setGymSearched] = useState('');
   const [filterCriteria, setFilterCriteria] = useState("name");
@@ -36,11 +25,9 @@ const Gyms = () => {
   }
   const changeFilterCriteria = (filter) => {
     setGymSearched('')
-    console.log(filter)
     setFilterCriteria(filter)
   }
   const changeOrderCriteria = (criteria) => {
-    console.log(criteria)
     setOrderCriteria(criteria)
   }
   const filterGyms = (gym) => {
@@ -69,37 +56,66 @@ const Gyms = () => {
       return gym1.reviews.length > gym2.reviews.length ? 1 : -1
     }
   }
-  useEffect(
-    () => console.log("gyms", gyms),
-    [gyms],
-  );
-  useEffect(
-    () => console.log("isToolbarReady", isToolbarReady),
-    [isToolbarReady],
-  );
 
   let { url } = useRouteMatch();
 
   return (
     <div>
       <h2>Gyms</h2>
-      <input
-        onChange={onSearchGym}
-        value={gymSearched} />
-      <br />
-      <br />
-      <button onClick={changeFilterCriteria.bind(this, "name")}>Filter by name</button>
-      <button onClick={changeFilterCriteria.bind(this, "location")}>Filter by location</button>
-      <button onClick={changeFilterCriteria.bind(this, "tag")}>Filter by tag</button>
-      <br />
-      <br />
-      <button onClick={changeOrderCriteria.bind(this, "name")}>Alphabetic order</button>
-      <button onClick={changeOrderCriteria.bind(this, "rating")}>Order by rating</button>
-      <button onClick={changeOrderCriteria.bind(this, "reviews")}>Order by reviews</button>
-      <br />
-      <br />
-      <button onClick={onChangeDisplay}>Choose display</button>
-      <br />
+      <Menu icon secondary>
+        <Input
+          icon='search'
+          placeholder='Search...'
+          onChange={onSearchGym}
+          value={gymSearched} />
+        <Dropdown item icon='filter'>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              icon='edit'
+              text='Filter by name'
+              onClick={() => changeFilterCriteria("name")} />
+            <Dropdown.Item
+              icon='point'
+              text='Filter by location'
+              onClick={() => changeFilterCriteria("location")} />
+            <Dropdown.Item
+              icon='tag'
+              text='Filter by tag'
+              onClick={() => changeFilterCriteria("tag")} />
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown item icon='sort'>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              icon='sort alphabet down'
+              text='Order by name'
+              onClick={() => changeOrderCriteria("name")} />
+            <Dropdown.Item
+              icon='sort numeric down'
+              text='Order by rating'
+              onClick={() => changeOrderCriteria("rating")} />
+            <Dropdown.Item
+              icon='sort amount down'
+              text='Order by reviews'
+              onClick={() => changeOrderCriteria("reviews")} />
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown item icon='block layout'>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              icon='list layout'
+              text='List'
+              onClick={onChangeDisplay} />
+            <Dropdown.Item
+              icon='grid layout'
+              text='Grid'
+              onClick={onChangeDisplay} />
+          </Dropdown.Menu>
+        </Dropdown>
+      </Menu>
+
       {displayStyle === true ?
         <div>
           <h3>Please select a gym.</h3>
@@ -139,11 +155,10 @@ const Gyms = () => {
         </div>
       }
       <br />
-      <button onClick={showStore}>Show store</button>
       {isToolbarReady &&
         <Portal node={document.getElementById("operationSection")}>
           <Menu.Item>
-          <AddButton path={location.pathname} />
+            <AddButton path={location.pathname} />
           </Menu.Item>
         </Portal>}
     </div>

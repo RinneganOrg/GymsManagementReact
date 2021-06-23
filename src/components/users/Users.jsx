@@ -7,18 +7,11 @@ const Users = () => {
   const dispatch = useDispatch()
   const onAddUser = () => dispatch(addUser('Dana Comiselu'))
   const users = useSelector(selectUsers)
-  const showStore = () => console.log(users)
-
-  useEffect(
-    () => console.log("hi", users),
-    [users],
-  );
 
   return (
     <div>
       <h2>Users</h2>
       <button onClick={onAddUser}>Add user</button>
-      <button onClick={showStore}>Show store</button>
     </div>
   )
 }
