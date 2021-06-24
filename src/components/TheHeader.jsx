@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Menu, Segment } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
-// TO DO
-// 1. de scos login si about done
-const TheHeader = () => {
 
+const TheHeader = () => {
   const [activeItem, setActiveItem] = useState('Gyms');
   const handleItemClick = (e, { name }) => setActiveItem(name)
   

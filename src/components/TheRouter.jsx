@@ -4,7 +4,6 @@ import {
   Route,
   useRouteMatch
 } from "react-router-dom";
-import About from "./about/About"
 import Login from './login/Login'
 import Gyms from './gyms/Gyms'
 import Trainers from './trainers/Trainers'
@@ -20,13 +19,9 @@ import Course from './courses/Course'
 import PrivateRoute from './PrivateRoute'
 
 const TheRouter = () => {
-  let { path } = useRouteMatch();
 
   return (
     <Switch>
-      <Route path="/about">
-        <About />
-      </Route>
       <Route path="/login">
         <Login />
       </Route>
