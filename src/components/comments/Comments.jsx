@@ -4,15 +4,16 @@ import { Comment, Header, Rating, Icon } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteComment } from '../../store/actions/comments'
 
-const CommentExampleComment = (props) => {
+const Comments = (props) => {
   const dispatch = useDispatch()
   const [mode, setMode] = useState('add');
   const [commentId, setCommentId] = useState('');
   const selectComments = state => state.comments
   const { comments } = useSelector(selectComments)
   const filterComments = (comment) => {
-    console.log(comment)
-    return comment.gymId === props.gymId || comment.trainerId === props.trainerId && comment.gymId && comment.trainerId
+    return (props.gymId !== undefined && comment.gymId === props.gymId) ||
+      (props.trainerId !== undefined && comment.trainerId === props.trainerId) ||
+      (props.courseId !== undefined && comment.courseId === props.courseId)
   }
   const changeToEditMode = (commentId) => {
     setCommentId(commentId)
@@ -31,7 +32,7 @@ const CommentExampleComment = (props) => {
         <Header as='h3' dividing>
           Reviews
         </Header>
-        <CommentForm gymId={props.gymId} mode={mode} changeMode={changeToAddMode} commentId={commentId} />
+        <CommentForm gymId={props.gymId} trainerId={props.trainerId} courseId={props.courseId} mode={mode} changeMode={changeToAddMode} commentId={commentId} />
         {comments.filter(filterComments).map((comment) => (
           <Comment key={comment.id}>
             <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
@@ -56,4 +57,4 @@ const CommentExampleComment = (props) => {
   )
 }
 
-export default CommentExampleComment
+export default Comments

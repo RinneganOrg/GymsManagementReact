@@ -6,21 +6,24 @@ import {
   useParams
 } from "react-router-dom";
 import { useSelector } from 'react-redux'
-import { Card, Image, List, Menu, Rating, Input, Dropdown } from 'semantic-ui-react'
+import { Card, Image, List, Menu, Rating, Input, Dropdown, Button } from 'semantic-ui-react'
 import AddButton from '../buttons/AddButton';
 import { Portal } from 'react-portal'
 
 const Trainers = () => {
   const location = useLocation()
   const params = useParams()
-  console.log(params)
-  const [displayStyle, setDisplayStyle] = useState(false);
-  const [trainerSearched, setTrainerSearched] = useState('');
-  const [filterCriteria, setFilterCriteria] = useState("name");
-  const [orderCriteria, setOrderCriteria] = useState("name");
+
+  const [displayStyle, setDisplayStyle] = useState(false)
+  const [trainerSearched, setTrainerSearched] = useState('')
+  const [filterCriteria, setFilterCriteria] = useState("name")
+  const [orderCriteria, setOrderCriteria] = useState("name")
+
   const onChangeDisplay = () => setDisplayStyle(!displayStyle)
   const selectTrainers = state => state.trainers.trainers
     .filter(trainer => params.gymId ? trainer.gymId + '' === params.gymId : true)
+  const gym = useSelector(state => state.gyms.gyms
+    .find(gym => gym.id + '' === params.gymId))
   const selectIsToolbarReady = state => state.toolbar
   const { isToolbarReady } = useSelector(selectIsToolbarReady)
   const trainers = useSelector(selectTrainers)
@@ -64,6 +67,8 @@ const Trainers = () => {
   let { url } = useRouteMatch();
   return (
     <div>
+      {params.gymId ?
+        <Button icon="backward" label={`Back to ${gym.name}`} as={Link} to={`/gyms/${params.gymId}`} size="tiny" /> : null}
       <h2>Trainers</h2>
       <Menu icon secondary>
         <Input

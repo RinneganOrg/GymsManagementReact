@@ -14,6 +14,7 @@ import Profile from './profile/Profile'
 import Gym from './gyms/Gym'
 import GymForm from './gyms/GymForm'
 import TrainerForm from './trainers/TrainerForm'
+import CourseForm from './courses/CourseForm'
 import Courses from './courses/Courses'
 import Course from './courses/Course'
 import PrivateRoute from './PrivateRoute'
@@ -42,7 +43,7 @@ const TheRouter = () => {
         <Trainer />
       </Route>
       <Route path="/trainers/:trainerId/edit">
-        <TrainerForm mode="edit"/>
+        <TrainerForm mode="edit" />
       </Route>
       <PrivateRoute path="/users">
         <Users />
@@ -50,26 +51,20 @@ const TheRouter = () => {
       <PrivateRoute path="/profile">
         <Profile />
       </PrivateRoute>
-      <Route exact path="/courses">
-        <Courses />
-      </Route>
-      <Route exact path="/courses/:courseId">
-        <Course />
-      </Route>
       <Route path="/gyms/add">
-        <GymForm mode="add"/>
+        <GymForm mode="add" />
       </Route>
       <Route exact path="/gyms/:gymId">
         <Gym />
       </Route>
       <Route path="/gyms/:gymId/edit">
-        <GymForm mode="edit"/>
+        <GymForm mode="edit" />
       </Route>
       <Route exact path="/gyms/:gymId/trainers">
         <Trainers />
       </Route>
       <Route path="/gyms/:gymId/trainers/add">
-        <TrainerForm mode="add"/>
+        <TrainerForm mode="add" />
       </Route>
       <Route exact path="/gyms/:gymId/trainers/:trainerId">
         <Trainer />
@@ -80,8 +75,20 @@ const TheRouter = () => {
       <Route exact path="/gyms/:gymId/courses">
         <Courses />
       </Route>
+      <Route path="/gyms/:gymId/courses/add">
+        <CourseForm mode="add" />
+      </Route>
       <Route exact path="/gyms/:gymId/courses/:courseId">
         <Course />
+      </Route>
+      <Route exact path="/gyms/:gymId/courses/:courseId/trainers/:trainerId">
+        <Trainer />
+      </Route>
+      <Route exact path="/gyms/:gymId/courses/:courseId/trainers/:trainerId/edit">
+        <TrainerForm mode="edit" />
+      </Route>
+      <Route path="/gyms/:gymId/courses/:courseId/edit">
+        <CourseForm mode="edit" />
       </Route>
     </Switch>
   )

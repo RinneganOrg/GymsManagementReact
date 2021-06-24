@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Menu } from 'semantic-ui-react'
 import { Portal } from 'react-portal'
 import SaveButton from '../buttons/SaveButton';
@@ -14,6 +14,7 @@ const GymForm = (props) => {
   )
   const [id, setId] = useState(gymToEdit ? gymToEdit.id : '');
   const [name, setName] = useState(gymToEdit ? gymToEdit.name : '');
+  const rating = gymToEdit ? gymToEdit.rating : 0
   const [address, setAddress] = useState(gymToEdit ? gymToEdit.address : '');
   const [description, setDescription] = useState(gymToEdit ? gymToEdit.description : '');
   const [image, setImage] = useState(gymToEdit ? gymToEdit.image : '');
@@ -47,12 +48,12 @@ const GymForm = (props) => {
   }
   const onSubmit = () => {
     let tagsArray = tags.split(',');
-    let gym = { name, address, description, image, tags: tagsArray }
+    let gym = { name, address, description, image, tags: tagsArray, rating }
     if (props.mode === "add") {
       dispatch(addGym(gym))
     }
     else if (props.mode === "edit") {
-      let gymEdited = { id, name, address, description, image, tags: tagsArray }
+      let gymEdited = { id, name, address, description, image, tags: tagsArray, rating }
       dispatch(editGym(gymEdited))
     }
   }
