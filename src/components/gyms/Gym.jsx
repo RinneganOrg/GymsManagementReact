@@ -9,6 +9,7 @@ import Comments from "../comments/Comments";
 import GymGraphScatter from "../GymGraphScatter";
 import { Image, Menu } from 'semantic-ui-react'
 import GymBarGraphHorizontal from "../GymBarGraphHorizontal";
+import CoursesCalendar from "../CoursesCalendar";
 
 const Gym = () => {
   let { gymId } = useParams();
@@ -47,6 +48,7 @@ const Gym = () => {
           </Portal>
           <GymBarGraphHorizontal gymId={gymId} selectedMonth={selectedMonth} />
           <GymGraphScatter gymId={gymId} handleChangeCourseBars={handleChangeCourseBars} />
+          <CoursesCalendar />
         </>
       }
     </div>

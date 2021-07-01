@@ -10,6 +10,7 @@ import TheRouter from './components/TheRouter';
 import ProvideAuth from './components/ProvideAuth'
 import AuthButton from './components/AuthButton'
 import { Grid } from 'semantic-ui-react'
+import './coursesCalendarStyle.css';
 
 export default function App() {
   return (
