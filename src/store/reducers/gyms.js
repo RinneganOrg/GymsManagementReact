@@ -1,6 +1,7 @@
 const initialState = {
   gyms: [
-    { id: 1,
+    {
+      id: 1,
       name: "WorldClass",
       address: "Street name",
       description: `Te eum doming eirmod, nominati pertinacia argumentum ad his. Ex eam alia
@@ -11,8 +12,10 @@ const initialState = {
       image: "https://www.worldclass.ro/wp-content/uploads/worldclass-romania-story-homepage.jpg",
       tags: ["#hardWork", "#styluus"],
       rating: 4,
-      reviews: ["cool gym", "great", "wow"] },
-    { id: 2,
+      reviews: ["cool gym", "great", "wow"]
+    },
+    {
+      id: 2,
       name: "FitClass",
       address: "Street name2",
       description: `Audiam quaerendum eu sea, pro omittam definiebas ex. Te est latine
@@ -22,8 +25,10 @@ const initialState = {
       image: "https://fitclass.ro/fitness-bucuresti/wp-content/uploads/2017/01/poza_fitclass_club_40-1030x685.jpg",
       tags: ["#fitLife", "#absss"],
       rating: 5,
-      reviews: ["amazing atmosphere", "cool trainers"] },
-    { id: 3,
+      reviews: ["amazing atmosphere", "cool trainers"]
+    },
+    {
+      id: 3,
       name: "SanGym",
       address: "Street name3",
       description: `Eu quo homero blandit intellegebat. Incorrupte consequuntur mei id. Mei ut
@@ -34,18 +39,19 @@ const initialState = {
       image: "https://www.salabucuresti.ro/images/pages/SAN_GYM_KQ4.jpg",
       tags: ["#makingYourDaysSannier", "#gymLife"],
       rating: 3,
-      reviews: ["more variety needed"] }
+      reviews: ["more variety needed"]
+    }
   ]
 }
 
 export default function addGym(state = initialState, action) {
   switch (action.type) {
     case 'ADD_GYM':
-      return { ...state, gyms: [...state.gyms, {...action.gym, id: state.gyms.length + 1}] }
+      return { ...state, gyms: [...state.gyms, { ...action.gym, id: state.gyms.length + 1 }] }
     case 'SET_GYMS':
       return { ...state, gyms: action.gyms }
-    case 'EDIT_GYM': 
-      return {...state, gyms: state.gyms.map((gym) => gym.id === action.gym.id ? action.gym : gym)}
+    case 'EDIT_GYM':
+      return { ...state, gyms: state.gyms.map((gym) => gym.id === action.gym.id ? action.gym : gym) }
     default:
       return state
   }

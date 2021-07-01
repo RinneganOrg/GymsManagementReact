@@ -68,7 +68,15 @@ const Trainers = () => {
   return (
     <div>
       {params.gymId ?
-        <Button icon="backward" label={`Back to ${gym.name}`} as={Link} to={`/gyms/${params.gymId}`} size="tiny" /> : null}
+        <Button
+          icon="backward"
+          transparent
+          color="blue"
+          label={{ basic: true, color: 'blue', pointing: 'none', content: `Back to ${gym.name}` }}
+          as={Link}
+          to={`/gyms/${params.gymId}`}
+          size="mini" />
+        : null}
       <h2>Trainers</h2>
       <Menu icon secondary>
         <Input

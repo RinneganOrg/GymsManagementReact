@@ -13,7 +13,9 @@ const initialState = {
       rating: 4,
       reviews: ["really hard", "sos i'm dying"],
       gymId: 1,
-      trainersId: [1]
+      trainersId: [1],
+      availableSpots: 10,
+      price: 20
     },
     {
       id: 2,
@@ -27,7 +29,9 @@ const initialState = {
       rating: 5,
       reviews: ["i could barely walk after", "ouch", "amazing"],
       gymId: 2,
-      trainersId: [1]
+      trainersId: [1],
+      availableSpots: 40,
+      price: 30
     },
     {
       id: 3,
@@ -42,7 +46,9 @@ const initialState = {
       rating: 3,
       reviews: ["The slow pace is so relaxing", "somehow challenging sometimes"],
       gymId: 2,
-      trainersId: [1, 2]
+      trainersId: [1, 2],
+      availableSpots: 10,
+      price: 50
     }
   ]
 }

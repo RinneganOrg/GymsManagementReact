@@ -5,6 +5,7 @@ import users from './users';
 import comments from './comments';
 import courses from './courses';
 import toolbar from './toolbar';
+import activities from './activities';
 
 export default combineReducers({
   gyms,
@@ -12,5 +13,6 @@ export default combineReducers({
   courses,
   users,
   comments,
-  toolbar
+  toolbar,
+  activities
 });

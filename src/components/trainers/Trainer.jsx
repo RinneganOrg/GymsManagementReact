@@ -10,8 +10,8 @@ const Trainer = () => {
   let { trainerId, gymId, courseId } = useParams()
   const trainerToDisplay = useSelector(state =>
     state.trainers.trainers.find(trainer => trainer.id + '' === trainerId))
-    const course = useSelector(state => state.courses.courses
-      .find(course => course.id + '' === courseId))
+  const course = useSelector(state => state.courses.courses
+    .find(course => course.id + '' === courseId))
   const location = useLocation()
   const selectIsToolbarReady = state => state.toolbar
   const { isToolbarReady } = useSelector(selectIsToolbarReady)
@@ -19,10 +19,24 @@ const Trainer = () => {
   return (
     <div>
       {gymId && courseId ?
-        <Button icon="backward" label={`Back to ${course.name}`} as={Link} to={`/gyms/${gymId}/courses/${courseId}`} size="tiny" />
+        <Button
+          transparent
+          icon="backward"
+          color="blue"
+          label={{ basic: true, color: 'blue', pointing: 'none', content: `Back to ${course.name}` }}
+          as={Link}
+          to={`/gyms/${gymId}/courses/${courseId}`}
+          size="mini" />
         :
         (gymId && courseId === undefined ?
-          <Button icon="backward" label="Back to trainers" as={Link} to={`/gyms/${gymId}/trainers`} size="tiny" />
+          <Button
+            icon="backward"
+            transparent
+            color="blue"
+            label={{ basic: true, color: 'blue', pointing: 'none', content: 'Back to trainers' }}
+            as={Link}
+            to={`/gyms/${gymId}/trainers`}
+            size="mini" />
           : null)}
       <h2 style={{ textAlign: 'center' }}>{trainerToDisplay.name}</h2>
       <Image src={trainerToDisplay.image} size='medium' centered />
