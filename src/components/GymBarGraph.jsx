@@ -6,9 +6,6 @@ const GymBarGraph = ({ gymId, startDate, endDate }) => {
   const activities = useSelector(state =>
     state.activities.activities.filter(activity =>
       activity.gymId + '' === gymId
-      // &&
-      // activity.startDate >= startDate &&
-      // activity.endDate <= endDate
     )
   )
   const courses = useSelector(state =>
@@ -21,13 +18,10 @@ const GymBarGraph = ({ gymId, startDate, endDate }) => {
     };
     const currentMonthAttendance = activities.reduce(reducer, 0)
 
-    console.log({ activities })
-    console.log({ currentMonthAttendance })
-
     // const course = courses.find(courseItem => courseItem.id === activity.courseId)
     return Object.assign({}, course, { currentMonthAttendance })
   })
-  console.log("data", { courseData })
+
   const createGraph = () => {
     const margin = ({ top: 20, right: 30, bottom: 30, left: 40 })
     const height = 500

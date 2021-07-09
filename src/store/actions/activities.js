@@ -11,3 +11,17 @@ export function addActivity(activity) {
     activity
   }
 }
+
+export function editActivity(activity) {
+  return {
+    type: 'EDIT_ACTIVITY',
+    activity
+  }
+}
+
+export function deleteActivity(activity) {
+  return {
+    type: 'DELETE_ACTIVITY',
+    activity
+  }
+}

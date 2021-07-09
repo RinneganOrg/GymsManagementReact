@@ -43,7 +43,7 @@ const TheRouter = () => {
       <PrivateRoute path="/users">
         <Users />
       </PrivateRoute>
-      <PrivateRoute path="/profile">
+      <PrivateRoute path="/profile/:userId">
         <Profile />
       </PrivateRoute>
       <Route path="/gyms/add">

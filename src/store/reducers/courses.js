@@ -14,8 +14,10 @@ const initialState = {
       reviews: ["really hard", "sos i'm dying"],
       gymId: 1,
       trainersId: [1],
-      availableSpots: 10,
-      price: 20
+      availableSpots: 50,
+      price: 20,
+      color: "#fef0db",
+      border: "#fdb44d"
     },
     {
       id: 2,
@@ -31,7 +33,9 @@ const initialState = {
       gymId: 2,
       trainersId: [1],
       availableSpots: 40,
-      price: 30
+      price: 30,
+      color: "rgba(253, 197, 208, 0.7)",
+      border: "#fa607e"
     },
     {
       id: 3,
@@ -47,8 +51,29 @@ const initialState = {
       reviews: ["The slow pace is so relaxing", "somehow challenging sometimes"],
       gymId: 2,
       trainersId: [1, 2],
-      availableSpots: 10,
-      price: 50
+      availableSpots: 35,
+      price: 50,
+      color: "rgba(218, 231, 255, 0.7)",
+      border: "#4786ff"
+    },
+    {
+      id: 4,
+      name: "Tabata",
+      description: `Eu quo homero blandit intellegebat. Incorrupte consequuntur mei id. Mei ut
+      facer dolores adolescens, no illum aperiri quo, usu odio brute at. Qui te
+      porro electram, ea dico facete utroque quo. Populo quodsi te eam, wisi
+      everti eos ex, eum elitr altera utamur at. Quodsi convenire mnesarchum eu
+      per, quas minimum postulant per id.`,
+      image: "https://mymotric.ro/wp-content/uploads/2020/06/pilates-beneficii_ok.jpg",
+      tags: ["#relaxing"],
+      rating: 3,
+      reviews: ["The slow pace is so relaxing", "somehow challenging sometimes"],
+      gymId: 3,
+      trainersId: [1, 2],
+      availableSpots: 45,
+      price: 50,
+      color: "#d5f7de",
+      border: "#34eb64"
     }
   ]
 }

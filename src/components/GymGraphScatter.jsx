@@ -24,8 +24,6 @@ const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
     return currentMonthRevenue
   })
 
-  console.log({ monthlyRevenue })
-
   const createGraph = () => {
     const margin = ({ top: 20, right: 10, bottom: 50, left: 50 })
     const height = 300

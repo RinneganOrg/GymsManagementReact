@@ -24,7 +24,6 @@ const Gyms = () => {
     setGymSearched(event.target.value)
   }
   const changeFilterCriteria = (filter) => {
-    setGymSearched('')
     setFilterCriteria(filter)
   }
   const changeOrderCriteria = (criteria) => {

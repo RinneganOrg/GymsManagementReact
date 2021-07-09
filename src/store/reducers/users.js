@@ -1,7 +1,7 @@
 const initialState = {
   users: [
-    { name: "Alice Toader", age: 22 },
-    { name: "Ana Petre", age: 21 }]
+    { id: 1, name: "Alice Toader", age: 22 },
+    { id: 2, name: "Ana Petre", age: 21 }]
 }
 
 export default function addUser(state = initialState, action) {

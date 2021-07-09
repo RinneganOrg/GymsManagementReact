@@ -12,7 +12,7 @@ const initialState = {
       tags: ["#hiit", "#abs"],
       rating: 4,
       reviews: ["cool guy", "amazing", "wow"],
-      gymId: 1
+      gymId: 2
     },
     {
       id: 2,

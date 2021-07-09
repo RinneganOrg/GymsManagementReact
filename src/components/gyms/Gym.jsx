@@ -23,7 +23,6 @@ const Gym = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
   const handleChangeCourseBars = (month) => {
     setSelectedMonth(month)
-    console.log({ month })
   }
   return (
     <div>
@@ -46,9 +45,9 @@ const Gym = () => {
               <AccessCoursesButton path={location.pathname} />
             </Menu.Item>
           </Portal>
+          <CoursesCalendar gymId={gymId} />
           <GymBarGraphHorizontal gymId={gymId} selectedMonth={selectedMonth} />
           <GymGraphScatter gymId={gymId} handleChangeCourseBars={handleChangeCourseBars} />
-          <CoursesCalendar />
         </>
       }
     </div>

@@ -17,14 +17,16 @@ export default function App() {
     <ProvideAuth>
       <Router>
         <TheHeader />
-        <Grid columns={2}>
-          <Grid.Column width={4}>
-            <Toolbar />
-          </Grid.Column>
-          <Grid.Column>
-            <AuthButton />
-            <TheRouter />
-          </Grid.Column>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={1}>
+              <Toolbar />
+            </Grid.Column>
+            <Grid.Column width={13} floated='centered'>
+              <AuthButton />
+              <TheRouter />
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </Router>
     </ProvideAuth>

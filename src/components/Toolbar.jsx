@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Menu, Button, Dropdown } from 'semantic-ui-react'
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import { useDispatch } from 'react-redux'
 import { toolbarIsReady } from '../store/actions/toolbar'
 
@@ -8,7 +8,7 @@ const Toolbar = () => {
   const [activeItem, setActiveItem] = useState({});
   const handleItemClick = (e, { name }) => setActiveItem(name)
   const dispatch = useDispatch()
-
+  let { url } = useRouteMatch();
   // is mounted effect
   useEffect(
     () => dispatch(toolbarIsReady()),
@@ -34,7 +34,7 @@ const Toolbar = () => {
           <Dropdown.Item
             icon='settings'
             text='Profile'
-            as={Link} to="/profile" />
+            as={Link} to="/profile/1" />
         </Dropdown.Menu>
       </Dropdown>
     </Menu>

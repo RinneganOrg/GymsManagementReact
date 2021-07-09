@@ -18,17 +18,8 @@ const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
       return accumulator + att
     };
     const currentMonthAttendance = activities.reduce(reducer, 0)
-
-    // console.log({ currentMonthAttendance })
-
-    // const course = courses.find(courseItem => courseItem.id === activity.courseId)
     return Object.assign({}, course, { currentMonthAttendance })
   })
-
-  console.log({ courseData })
-  console.log({ activities })
-  console.log({ selectedMonth })
-
 
   const makeBars = () => {
     const margin = ({ top: 0, right: 10, bottom: 30, left: 90 })
@@ -55,7 +46,6 @@ const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
     const svg = d3.select("#graph").append("svg")
       .attr("viewBox", [0, 0, width, height]);
 
-    console.log("svg", svg)
     svg.append("g")
       .attr("fill", "steelblue")
       .selectAll("rect")
@@ -75,9 +65,7 @@ const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
   }
 
   const draw = (svg, x, y) => {
-    console.log("draw")
     const courseData = [{ currentMonthAttendance: 15 }]
-    // const svg = d3.select("#graph")
     const bars = svg.selectAll("rect")
       .data(courseData);
     bars.exit()
@@ -107,7 +95,6 @@ const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
     [],
   );
   return <div id="graph">
-    <button onClick={draw}>Change graph</button>
   </div>
 }
 export default GymBarGraphHorizontal
