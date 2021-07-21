@@ -18,7 +18,7 @@ const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
     })
     const reducer = (accumulator, activity) => {
       const course = courses.find(courseItem => courseItem.id === activity.courseId)
-      return accumulator + activity.attendance * course.price
+      return accumulator + activity.currentAttendance * course.price
     }
     const currentMonthRevenue = currentMonthActivities.reduce(reducer, 0)
     return currentMonthRevenue

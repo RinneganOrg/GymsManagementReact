@@ -5,7 +5,8 @@ const initialState = {
       gymId: 1,
       courseId: 1,
       trainerId: 1,
-      attendance: 10,
+      maxAttendance: 10,
+      currentAttendance: 0,
       startDate: "2021-01-01",
       endDate: "2021-01-05",
       userIds: []
@@ -15,7 +16,8 @@ const initialState = {
       gymId: 1,
       courseId: 1,
       trainerId: 1,
-      attendance: 20,
+      maxAttendance: 20,
+      currentAttendance: 0,
       startDate: "2021-01-07",
       endDate: "2021-01-12",
       userIds: []
@@ -26,7 +28,8 @@ const initialState = {
       courseId: 1,
       trainerId: 1,
       trainerId: 1,
-      attendance: 15,
+      maxAttendance: 15,
+      currentAttendance: 0,
       startDate: "2021-01-20",
       endDate: "2021-01-25",
       userIds: []
@@ -36,7 +39,8 @@ const initialState = {
       gymId: 2,
       courseId: 2,
       trainerId: 1,
-      attendance: 10,
+      maxAttendance: 10,
+      currentAttendance: 0,
       startDate: "2021-01-02",
       endDate: "2021-01-04",
       userIds: []
@@ -46,7 +50,8 @@ const initialState = {
       gymId: 2,
       courseId: 2,
       trainerId: 1,
-      attendance: 20,
+      maxAttendance: 20,
+      currentAttendance: 0,
       startDate: "2021-01-06",
       endDate: "2021-01-13",
       userIds: []
@@ -56,7 +61,8 @@ const initialState = {
       gymId: 2,
       courseId: 2,
       trainerId: 1,
-      attendance: 20,
+      maxAttendance: 20,
+      currentAttendance: 0,
       startDate: "2021-03-30",
       endDate: "2021-04-01",
       userIds: []
@@ -65,7 +71,8 @@ const initialState = {
       gymId: 2,
       courseId: 3,
       trainerId: 2,
-      attendance: 15,
+      maxAttendance: 15,
+      currentAttendance: 0,
       startDate: "2021-02-01",
       endDate: "2021-02-03",
       userIds: []
@@ -74,7 +81,8 @@ const initialState = {
       gymId: 2,
       courseId: 3,
       trainerId: 1,
-      attendance: 12,
+      maxAttendance: 12,
+      currentAttendance: 0,
       startDate: "2021-01-18",
       endDate: "2021-01-25",
       userIds: []
@@ -83,7 +91,8 @@ const initialState = {
       gymId: 2,
       courseId: 3,
       trainerId: 2,
-      attendance: 7,
+      maxAttendance: 7,
+      currentAttendance: 0,
       startDate: "2021-04-14",
       endDate: "2021-04-17",
       userIds: []
@@ -92,7 +101,8 @@ const initialState = {
       gymId: 2,
       courseId: 2,
       trainerId: 1,
-      attendance: 40,
+      maxAttendance: 40,
+      currentAttendance: 0,
       startDate: "2021-05-18",
       endDate: "2021-05-25",
       userIds: []
@@ -101,7 +111,8 @@ const initialState = {
       gymId: 2,
       courseId: 3,
       trainerId: 2,
-      attendance: 35,
+      maxAttendance: 35,
+      currentAttendance: 0,
       startDate: "2021-05-17",
       endDate: "2021-05-25",
       userIds: []
@@ -111,7 +122,8 @@ const initialState = {
       gymId: 3,
       courseId: 4,
       trainerId: 2,
-      attendance: 45,
+      maxAttendance: 45,
+      currentAttendance: 0,
       startDate: "2021-05-18",
       endDate: "2021-05-25",
       userIds: []

@@ -14,7 +14,7 @@ const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
   )
   const courseData = courses.map((course) => {
     const reducer = (accumulator, activity) => {
-      const att = activity.courseId === course.id ? activity.attendance : 0
+      const att = activity.courseId === course.id ? activity.currentAttendance : 0
       return accumulator + att
     };
     const currentMonthAttendance = activities.reduce(reducer, 0)

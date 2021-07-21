@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import EditButton from '../buttons/EditButton';
 import Comments from "../comments/Comments";
 import { Image, Menu, Button } from 'semantic-ui-react'
+import '../../trainersStyle.css'
 
 const Trainer = () => {
   let { trainerId, gymId, courseId } = useParams()
@@ -20,7 +21,7 @@ const Trainer = () => {
     <div>
       {gymId && courseId ?
         <Button
-          transparent
+        transparent="true"
           icon="backward"
           color="blue"
           label={{ basic: true, color: 'blue', pointing: 'none', content: `Back to ${course.name}` }}
@@ -31,16 +32,16 @@ const Trainer = () => {
         (gymId && courseId === undefined ?
           <Button
             icon="backward"
-            transparent
+            transparent="true"
             color="blue"
             label={{ basic: true, color: 'blue', pointing: 'none', content: 'Back to trainers' }}
             as={Link}
             to={`/gyms/${gymId}/trainers`}
             size="mini" />
           : null)}
-      <h2 style={{ textAlign: 'center' }}>{trainerToDisplay.name}</h2>
+      <h2 className="trainers-header">{trainerToDisplay.name}</h2>
       <Image src={trainerToDisplay.image} size='medium' centered />
-      <p style={{ textAlign: 'center' }}>{trainerToDisplay.description}</p>
+      <p className="trainers-header" >{trainerToDisplay.description}</p>
       <Comments trainerId={trainerToDisplay.id} />
       {isToolbarReady &&
         <>

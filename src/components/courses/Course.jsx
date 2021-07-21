@@ -4,8 +4,9 @@ import { Portal } from 'react-portal'
 import { useSelector } from 'react-redux'
 import EditButton from '../buttons/EditButton';
 import Comments from "../comments/Comments";
-import { Image, Menu, List, Header, Button, Grid } from 'semantic-ui-react'
+import { Image, Menu, List, Header, Button, Label } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
+import '../../coursesStyle.css';
 
 const Course = () => {
   let { courseId, gymId } = useParams()
@@ -23,7 +24,7 @@ const Course = () => {
     <div>
       {gymId ?
         <Button
-          transparent
+        transparent="true"
           color='blue'
           icon='backward'
           as={Link}
@@ -32,9 +33,19 @@ const Course = () => {
           label={{ basic: true, color: 'blue', pointing: 'none', content: 'Back to courses' }}
         />
         : null}
-      <h2 style={{ textAlign: 'center' }}>{courseToDisplay.name}</h2>
+      <Header as='h2' className= "course-header">
+        <Label circular
+          size="mini"
+          className="course-label"
+          style={{
+            backgroundColor: `${courseToDisplay.color}`
+          }}
+        />
+        {courseToDisplay.name}
+      </Header>
+
       <Image src={courseToDisplay.image} size='medium' centered />
-      <p style={{ textAlign: 'center' }}>{courseToDisplay.description}</p>
+      <p className="courseDescription">{courseToDisplay.description}</p>
 
       <Header size="small">Trainers</Header>
       <List horizontal>

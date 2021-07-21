@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, Button, Dropdown } from 'semantic-ui-react'
+import { Menu, Dropdown, Icon } from 'semantic-ui-react'
 import { Link, useRouteMatch } from "react-router-dom";
 import { useDispatch } from 'react-redux'
 import { toolbarIsReady } from '../store/actions/toolbar'
@@ -19,6 +19,10 @@ const Toolbar = () => {
     <Menu vertical icon borderless className="flexed">
       <Menu.Item>
         <Menu.Menu id="operationSection">
+        </Menu.Menu>
+      </Menu.Item>
+      <Menu.Item>
+        <Menu.Menu id="childrenSection">
         </Menu.Menu>
       </Menu.Item>
       <Menu.Item>

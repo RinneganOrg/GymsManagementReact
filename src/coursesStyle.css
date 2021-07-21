@@ -1,0 +1,12 @@
+h2.ui.course-header {
+  text-align: center;
+}
+.courseDescription {
+  text-align: center
+}
+.ui.label.course-label {
+  margin-right: 10px
+}
+.ui.mini.circular.label.color-label-course-form {
+   margin-left: 10px
+}

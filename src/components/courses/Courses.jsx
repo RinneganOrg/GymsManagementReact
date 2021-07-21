@@ -6,7 +6,7 @@ import {
   useParams
 } from "react-router-dom";
 import { useSelector } from 'react-redux'
-import { Card, Image, List, Menu, Rating, Input, Dropdown, Button } from 'semantic-ui-react'
+import { Card, Image, List, Menu, Rating, Input, Dropdown, Button, Label, Header } from 'semantic-ui-react'
 import AddButton from '../buttons/AddButton';
 import { Portal } from 'react-portal'
 
@@ -69,7 +69,7 @@ const Courses = () => {
       {params.gymId ?
         <Button
           icon="backward"
-          transparent
+          transparent="true"
           color="blue"
           label={{ basic: true, color: 'blue', pointing: 'none', content: `Back to ${gym.name}` }}
           as={Link}
@@ -137,7 +137,12 @@ const Courses = () => {
                 <List.Item key={course.id}>
                   <Image avatar src={course.image} />
                   <List.Content>
-                    <List.Header as={Link} to={`${url}/${course.id}`}>{course.name}</List.Header>
+                    <Header as={Link} to={`${url}/${course.id}`}>
+                      <Label circular size="mini" className="course-label" style={{
+                        backgroundColor: `${course.color}`
+                      }} />
+                      {course.name}
+                    </Header>
                     <Rating icon='star' defaultRating={course.rating} maxRating={5} disabled />
                     {course.tags.map((tag, index) =>
                       <p key={index}>{tag}</p>
@@ -158,7 +163,12 @@ const Courses = () => {
                 <Card key={course.id} as={Link} to={`${url}/${course.id}`}>
                   <Image src={course.image} wrapped ui={false} />
                   <Card.Content>
-                    <Card.Header>{course.name}</Card.Header>
+                    <Header>
+                      <Label circular size="mini" className="course-label" style={{
+                        backgroundColor: `${course.color}`
+                      }} />
+                      {course.name}
+                    </Header>
                     <Card.Meta>
                       {course.tags.map((tag, index) =>
                         <p key={index}>{tag}</p>

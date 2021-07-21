@@ -14,10 +14,8 @@ const initialState = {
       reviews: ["really hard", "sos i'm dying"],
       gymId: 1,
       trainersId: [1],
-      availableSpots: 50,
       price: 20,
-      color: "#fef0db",
-      border: "#fdb44d"
+      color: "#fdb44d"
     },
     {
       id: 2,
@@ -32,10 +30,8 @@ const initialState = {
       reviews: ["i could barely walk after", "ouch", "amazing"],
       gymId: 2,
       trainersId: [1],
-      availableSpots: 40,
       price: 30,
-      color: "rgba(253, 197, 208, 0.7)",
-      border: "#fa607e"
+      color: "#fa607e"
     },
     {
       id: 3,
@@ -51,10 +47,8 @@ const initialState = {
       reviews: ["The slow pace is so relaxing", "somehow challenging sometimes"],
       gymId: 2,
       trainersId: [1, 2],
-      availableSpots: 35,
       price: 50,
-      color: "rgba(218, 231, 255, 0.7)",
-      border: "#4786ff"
+      color: "#4786ff"
     },
     {
       id: 4,
@@ -70,10 +64,8 @@ const initialState = {
       reviews: ["The slow pace is so relaxing", "somehow challenging sometimes"],
       gymId: 3,
       trainersId: [1, 2],
-      availableSpots: 45,
       price: 50,
-      color: "#d5f7de",
-      border: "#34eb64"
+      color: "#34eb64"
     }
   ]
 }

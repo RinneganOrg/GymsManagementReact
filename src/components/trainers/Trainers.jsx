@@ -70,7 +70,7 @@ const Trainers = () => {
       {params.gymId ?
         <Button
           icon="backward"
-          transparent
+          transparent="true"
           color="blue"
           label={{ basic: true, color: 'blue', pointing: 'none', content: `Back to ${gym.name}` }}
           as={Link}
