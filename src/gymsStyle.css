@@ -1,3 +1,22 @@
 .gym-header {
   text-align: center;
 }
+.ten.wide.column.gymInformation {
+  margin-left: -40px;
+}
+.six.wide.column.gymIcons {
+  text-align: center;
+}
+.gym-image {
+  height: 100%;
+  width: 100%
+}
+.item.gym-icon {
+  margin-bottom: 25px;
+}
+.header.list-header-gym {
+  margin-top: 9px !important
+}
+.ui.grid.gym-grid {
+  margin-bottom: 30px;
+}

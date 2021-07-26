@@ -10,3 +10,25 @@ h2.ui.course-header {
 .ui.mini.circular.label.color-label-course-form {
    margin-left: 10px
 }
+.ui.grid.course-grid {
+  margin-top: 20px;
+}
+.course-header {
+  text-align: center;
+}
+.ten.wide.column.courseInformation {
+  margin-left: -40px;
+}
+.six.wide.column.courseIcons {
+  text-align: center;
+}
+.course-image {
+  height: 100%;
+  width: 100%
+}
+.item.course-icon {
+  margin-bottom: 15px;
+}
+.header.list-header-course {
+  margin-top: 11px !important
+}

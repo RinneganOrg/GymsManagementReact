@@ -68,13 +68,13 @@ const Courses = () => {
     <div>
       {params.gymId ?
         <Button
-          icon="backward"
-          transparent="true"
+          basic
+          circular
           color="blue"
-          label={{ basic: true, color: 'blue', pointing: 'none', content: `Back to ${gym.name}` }}
+          icon='arrow left'
           as={Link}
           to={`/gyms/${params.gymId}`}
-          size="mini" />
+          size="small" />
         : null}
       <h2>Courses</h2>
       <Menu icon secondary>

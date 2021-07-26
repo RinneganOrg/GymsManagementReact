@@ -4,7 +4,7 @@ import { Portal } from 'react-portal'
 import { useSelector } from 'react-redux'
 import EditButton from '../buttons/EditButton';
 import Comments from "../comments/Comments";
-import { Image, Menu, Button } from 'semantic-ui-react'
+import { Image, Menu, Button, Grid, Divider, Header } from 'semantic-ui-react'
 import '../../trainersStyle.css'
 
 const Trainer = () => {
@@ -18,30 +18,40 @@ const Trainer = () => {
   const { isToolbarReady } = useSelector(selectIsToolbarReady)
 
   return (
-    <div>
+    <>
       {gymId && courseId ?
         <Button
-        transparent="true"
-          icon="backward"
+          basic
+          circular
+          icon='arrow left'
           color="blue"
-          label={{ basic: true, color: 'blue', pointing: 'none', content: `Back to ${course.name}` }}
           as={Link}
           to={`/gyms/${gymId}/courses/${courseId}`}
-          size="mini" />
+          size="small" />
         :
         (gymId && courseId === undefined ?
           <Button
-            icon="backward"
-            transparent="true"
+            basic
+            circular
+            icon='arrow left'
             color="blue"
-            label={{ basic: true, color: 'blue', pointing: 'none', content: 'Back to trainers' }}
             as={Link}
             to={`/gyms/${gymId}/trainers`}
-            size="mini" />
+            size="small" />
           : null)}
-      <h2 className="trainers-header">{trainerToDisplay.name}</h2>
-      <Image src={trainerToDisplay.image} size='medium' centered />
-      <p className="trainers-header" >{trainerToDisplay.description}</p>
+
+      <Grid className="trainer-grid">
+        <Grid.Column width={12} className="trainerInformation">
+          <Image src={trainerToDisplay.image} className="trainer-image" />
+        </Grid.Column>
+        <Grid.Column width={4} centered>
+          <Header as='h2' className="trainers-header">
+            {trainerToDisplay.name}
+          </Header>
+          <Divider />
+          <Header as="h5" className="trainers-header">{trainerToDisplay.description}</Header>
+        </Grid.Column>
+      </Grid>
       <Comments trainerId={trainerToDisplay.id} />
       {isToolbarReady &&
         <>
@@ -52,7 +62,7 @@ const Trainer = () => {
           </Portal>
         </>
       }
-    </div>
+    </>
   );
 }
 export default Trainer;

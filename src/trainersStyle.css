@@ -1,3 +1,14 @@
 .trainers-header {
   text-align: center;
 }
+.twelve.wide.column.trainerInformation {
+  margin-left: -40px;
+}
+.trainer-image {
+  height: 100%;
+  width: 100%
+}
+.ui.grid.trainer-grid {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

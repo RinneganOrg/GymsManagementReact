@@ -69,13 +69,13 @@ const Trainers = () => {
     <div>
       {params.gymId ?
         <Button
-          icon="backward"
-          transparent="true"
+        basic
+        circular
+        icon='arrow left'
           color="blue"
-          label={{ basic: true, color: 'blue', pointing: 'none', content: `Back to ${gym.name}` }}
           as={Link}
           to={`/gyms/${params.gymId}`}
-          size="mini" />
+          size="small" />
         : null}
       <h2>Trainers</h2>
       <Menu icon secondary>

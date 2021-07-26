@@ -89,7 +89,8 @@ const CoursesCalendar = ({ gymId, userId }) => {
     if (day.dayNumber) {
       setSelectedDay(day.dayNumber)
     }
-    setShowEditModal(!showEditModal)
+    if (!userId)
+      setShowEditModal(!showEditModal)
     setShowEditMode(!showEditMode)
   }
   const changeDisplayEditModal = (event, activity, dayNumber) => {
@@ -223,6 +224,26 @@ const CoursesCalendar = ({ gymId, userId }) => {
     }
     dispatch(editActivity(activity))
   }
+  const leaveCourse = () => {
+    let activity = {}
+    activity = {
+      id: selectedActivity.id,
+      gymId: selectedActivity.gymId,
+      courseId: parseInt(selectedActivity.courseId),
+      trainerId: parseInt(selectedActivity.trainerId),
+      currentAttendance: --selectedActivity.currentAttendance,
+      maxAttendance: selectedActivity.maxAttendance,
+      startDate: selectedActivity.startDate,
+      endDate: selectedActivity.endDate,
+      userIds: selectedActivity.userIds
+    }
+    var index = activity.userIds.indexOf(1);
+    if (index >= 0) {
+      activity.userIds.splice(index, 1);
+    }
+    dispatch(editActivity(activity))
+    setShowEditModal(false)
+  }
   const makeTaskClassName = (activity, day) => {
     if (new Date(activity.startDate).getDate() === day && new Date(activity.endDate).getDate() === day) {
       return "task task--first-day task--last-day short-text"
@@ -305,7 +326,9 @@ const CoursesCalendar = ({ gymId, userId }) => {
                     className={makeTaskClassName(activity, dayOfTheMonth.dayNumber) + ' ' + "activityDisplayed"}
                     style={{
                       background: `${activity.color}`,
-                      opacity: activity.currentAttendance === activity.maxAttendance ? 0.5 : 1
+                      opacity: activity.currentAttendance === activity.maxAttendance ||
+                        new Date(activity.endDate) < new Date() ?
+                        0.5 : 1
                     }}
                     onClick={(event) => changeDisplayEditModal(event, activity, dayOfTheMonth.dayNumber)}>
                     {new Date(activity.startDate).getDate() === dayOfTheMonth.dayNumber ? activity.text : null}
@@ -330,7 +353,9 @@ const CoursesCalendar = ({ gymId, userId }) => {
                           className={makeTaskClassName(activity, dayOfTheMonth.dayNumber) + ' ' + "moreActivities"}
                           style={{
                             background: `${activity.color}`,
-                            opacity: activity.currentAttendance === activity.maxAttendance ? 0.5 : 1
+                            opacity: activity.currentAttendance === activity.maxAttendance ||
+                              new Date(activity.endDate) < new Date() ?
+                              0.5 : 1
                           }}
                           onClick={(event) => changeDisplayEditModal(event, activity)}>
                           {activity.text}
@@ -455,12 +480,14 @@ const CoursesCalendar = ({ gymId, userId }) => {
                   <Grid.Column width={1}>
                     <Icon
                       name=
-                      {selectedActivity.maxAttendance === selectedActivity.currentAttendance ?
+                      {selectedActivity.maxAttendance === selectedActivity.currentAttendance ||
+                        new Date(selectedActivity.endDate) < new Date() ?
                         "minus circle" :
                         "check circle outline"
                       }
                       color=
-                      {selectedActivity.maxAttendance === selectedActivity.currentAttendance ?
+                      {selectedActivity.maxAttendance === selectedActivity.currentAttendance ||
+                        new Date(selectedActivity.endDate) < new Date() ?
                         "red" :
                         "green"
                       }
@@ -469,12 +496,21 @@ const CoursesCalendar = ({ gymId, userId }) => {
                   <Grid.Column width={10}>
                     <h3>Spots available: {selectedActivity.maxAttendance - selectedActivity.currentAttendance}</h3>
                   </Grid.Column>
-                  <Button
-                    floated="right"
-                    color="blue"
-                    disabled={selectedActivity.maxAttendance === selectedActivity.currentAttendance? true: false}
-                    onClick={attendCourse}>
-                    Attend course</Button>
+                  {gymId ?
+                    <Button
+                      floated="right"
+                      color="blue"
+                      disabled={selectedActivity.maxAttendance === selectedActivity.currentAttendance ||
+                        new Date(selectedActivity.endDate) < new Date() ?
+                        true : false}
+                      onClick={attendCourse}>
+                      Attend course</Button> : null}
+                  {userId ?
+                    <Button
+                      floated="right"
+                      color="blue"
+                      onClick={leaveCourse}>
+                      Leave course</Button> : null}
                 </Grid.Row>
               </Grid>
             </div>

@@ -15,7 +15,8 @@ const initialState = {
       gymId: 1,
       trainersId: [1],
       price: 20,
-      color: "#fdb44d"
+      color: "#fdb44d",
+      duration: 50
     },
     {
       id: 2,
@@ -31,7 +32,8 @@ const initialState = {
       gymId: 2,
       trainersId: [1],
       price: 30,
-      color: "#fa607e"
+      color: "#fa607e",
+      duration: 50
     },
     {
       id: 3,
@@ -48,7 +50,8 @@ const initialState = {
       gymId: 2,
       trainersId: [1, 2],
       price: 50,
-      color: "#4786ff"
+      color: "#4786ff",
+      duration: 50
     },
     {
       id: 4,
@@ -65,7 +68,8 @@ const initialState = {
       gymId: 3,
       trainersId: [1, 2],
       price: 50,
-      color: "#34eb64"
+      color: "#34eb64",
+      duration: 50
     }
   ]
 }
