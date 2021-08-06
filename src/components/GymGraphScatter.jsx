@@ -1,15 +1,20 @@
 import React, { useEffect } from "react";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as d3 from "d3";
+import { setActivities } from "../store/actions/activities";
+import { setCourses } from "../store/actions/courses";
 
 const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
+  const dispatch = useDispatch()
   const activities = useSelector(state =>
     state.activities.activities.filter(activity => activity.gymId + '' === gymId)
   )
   const courses = useSelector(state =>
-    state.courses.courses.filter(course => course.gymId + '' === gymId)
+    state.courses.courses
+    .filter(course => course.gymId + '' === gymId)
   )
-
+  console.log(courses)
+  console.log(activities)
   const monthsArray = Array(12).fill(0)
   const monthlyRevenue = monthsArray.map((month, monthIndex) => {
     const currentMonthActivities = activities.filter(activity => {
@@ -17,7 +22,8 @@ const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
       return activityStartDate.getMonth() === monthIndex  //getMonth() Jan is considered 0
     })
     const reducer = (accumulator, activity) => {
-      const course = courses.find(courseItem => courseItem.id === activity.courseId)
+      console.log(activity)
+      const course = courses.find(courseItem => courseItem._id === activity.courseId)
       return accumulator + activity.currentAttendance * course.price
     }
     const currentMonthRevenue = currentMonthActivities.reduce(reducer, 0)
@@ -89,7 +95,13 @@ const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
       })
   }
   useEffect(
-    () => createGraph(),
+    () => {
+      dispatch(setCourses(
+        `http://localhost:8000/courses`
+        )).then(() =>
+        dispatch(setActivities())).then(()=>
+        createGraph())
+    },
     [],
   );
   return <div id="graph" />

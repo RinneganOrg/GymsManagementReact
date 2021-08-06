@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Link,
   useRouteMatch,
   useLocation,
   useParams
 } from "react-router-dom";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Card, Image, List, Menu, Rating, Input, Dropdown, Button, Label, Header } from 'semantic-ui-react'
 import AddButton from '../buttons/AddButton';
 import { Portal } from 'react-portal'
+import { setCourses } from '../../store/actions/courses'
 
 const Courses = () => {
   const location = useLocation()
   const params = useParams()
+  const dispatch = useDispatch()
 
   const [displayStyle, setDisplayStyle] = useState(false);
   const [courseSearched, setCourseSearched] = useState('');
@@ -21,10 +23,8 @@ const Courses = () => {
 
   const onChangeDisplay = () => setDisplayStyle(!displayStyle)
   const selectCourses = state => state.courses.courses
-    .filter(course => params.gymId ? course.gymId + '' === params.gymId : true)
+  .filter(course => params.gymId ? course.gymId + '' === params.gymId : true)
   const courses = useSelector(selectCourses)
-  const gym = useSelector(state => state.gyms.gyms
-    .find(gym => gym.id + '' === params.gymId))
   const selectIsToolbarReady = state => state.toolbar
   const { isToolbarReady } = useSelector(selectIsToolbarReady)
   const onSearchCourse = (event) => {
@@ -61,6 +61,16 @@ const Courses = () => {
       return course1.reviews.length > course2.reviews.length ? 1 : -1
     }
   }
+
+  useEffect(
+    () => {
+      dispatch(setCourses(
+        `http://localhost:8000/courses`
+      ))
+    }
+    ,
+    []
+  )
 
   let { url } = useRouteMatch()
 
@@ -131,13 +141,13 @@ const Courses = () => {
         <div>
           <h3>Please select a course.</h3>
           <List selection verticalAlign='middle'>
-            {courses.filter(filterCourses)
+            {courses && courses.length >= 0 ? courses.filter(filterCourses)
               .sort((course1, course2) => orderCourses(course1, course2))
               .map((course) => (
-                <List.Item key={course.id}>
+                <List.Item key={course._id}>
                   <Image avatar src={course.image} />
                   <List.Content>
-                    <Header as={Link} to={`${url}/${course.id}`}>
+                    <Header as={Link} to={`${url}/${course._id}`}>
                       <Label circular size="mini" className="course-label" style={{
                         backgroundColor: `${course.color}`
                       }} />
@@ -149,18 +159,18 @@ const Courses = () => {
                     )}
                   </List.Content>
                 </List.Item>
-              ))}
+              )) : null}
           </List>
         </div>
         :
         <div>
           <h3>Please select a course.</h3>
           <Card.Group itemsPerRow={3}>
-            {courses.filter(course =>
+            {courses && courses.length >= 0 ? courses.filter(course =>
               filterCourses(course))
               .sort((course1, course2) => orderCourses(course1, course2))
               .map((course) => (
-                <Card key={course.id} as={Link} to={`${url}/${course.id}`}>
+                <Card key={course._id} as={Link} to={`${url}/${course._id}`}>
                   <Image src={course.image} wrapped ui={false} />
                   <Card.Content>
                     <Header>
@@ -177,11 +187,11 @@ const Courses = () => {
                     </Card.Meta>
                   </Card.Content>
                 </Card>
-              ))}
+              )) : null}
           </Card.Group>
         </div>
       }
-      {isToolbarReady &&
+      {isToolbarReady && document.getElementById("operationSection") &&
         <Portal node={document.getElementById("operationSection")}>
           <Menu.Item>
             <AddButton path={location.pathname} />

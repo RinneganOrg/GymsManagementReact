@@ -10,10 +10,10 @@ import { addTrainer, editTrainer } from '../../store/actions/trainers'
 const TrainerForm = (props) => {
   const params = useParams()
   const trainerToEdit = useSelector(state =>
-    state.trainers.trainers.find(trainer => trainer.id + '' === params.trainerId)
+    state.trainers.trainers
+    .find(trainer => trainer._id + '' === params.trainerId)
   )
-  // const [id, setId] = useState(trainerToEdit ? trainerToEdit.id : '');
-  const id = trainerToEdit ? trainerToEdit.id : ''
+  const id = trainerToEdit ? trainerToEdit._id : ''
   const gymId = trainerToEdit ? trainerToEdit.gymId : params.gymId
   const rating = trainerToEdit ? trainerToEdit.rating : 0
   const [name, setName] = useState(trainerToEdit ? trainerToEdit.name : '')
@@ -49,11 +49,15 @@ const TrainerForm = (props) => {
     let trainer = { gymId, name, description, image, tags: tagsArray, rating }
 
     if (props.mode === "add") {
-      dispatch(addTrainer(trainer))
+      dispatch(addTrainer(
+        "http://localhost:8000/trainers",
+        trainer))
     }
     else if (props.mode === "edit") {
       let trainerEdited = { id, gymId, name, description, image, tags: tagsArray, rating }
-      dispatch(editTrainer(trainerEdited))
+      dispatch(editTrainer(
+        `http://localhost:8000/trainers/${params.trainerId}`,
+        trainerEdited))
     }
   }
 

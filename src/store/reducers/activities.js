@@ -137,9 +137,9 @@ export default function addActivity(state = initialState, action) {
     case 'SET_ACTIVITIES':
       return { ...state, activities: action.activities }
     case 'EDIT_ACTIVITY':
-      return { ...state, activities: state.activities.map((activity) => activity.id === action.activity.id ? action.activity : activity) }
+      return { ...state, activities: state.activities.map((activity) => activity._id === action.activity._id ? action.activity : activity) }
     case 'DELETE_ACTIVITY':
-      return { ...state, activities: state.activities.filter(activity => activity.id !== action.activity.id) }
+      return { ...state, activities: state.activities.filter(activity => activity._id !== action.activity._id) }
     default:
       return state
   }

@@ -6,20 +6,24 @@ import { useAuth } from '../Utils/context';
 
 function PrivateRoute({ children, ...rest }) {
   let auth = useAuth();
+  console.log(auth)
   return (
     <Route
       {...rest}
-      render={({ location }) =>
-        auth.user ? (
+      render={({ location }) => {
+        return auth && auth.role === "admin" ? (
           children
-        ) : (
+        ) : (auth && auth.role === "user" && location.pathname.includes("profile")
+          ? (children)
+          :
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/signin",
               state: { from: location }
             }}
           />
         )
+      }
       }
     />
   );

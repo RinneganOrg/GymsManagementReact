@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as d3 from "d3";
+import { setActivities } from "../store/actions/activities";
+import { setCourses } from "../store/actions/courses";
 
 const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
+  const dispatch = useDispatch()
   const activities = useSelector(state =>
     state.activities.activities.filter(activity =>
       activity.gymId + '' === gymId &&
@@ -14,7 +17,7 @@ const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
   )
   const courseData = courses.map((course) => {
     const reducer = (accumulator, activity) => {
-      const att = activity.courseId === course.id ? activity.currentAttendance : 0
+      const att = activity.courseId === course._id ? activity.currentAttendance : 0
       return accumulator + att
     };
     const currentMonthAttendance = activities.reduce(reducer, 0)
@@ -65,7 +68,7 @@ const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
   }
 
   const draw = (svg, x, y) => {
-    const courseData = [{ currentMonthAttendance: 15 }]
+    // const courseData = [{ currentMonthAttendance: 15 }]
     const bars = svg.selectAll("rect")
       .data(courseData);
     bars.exit()
@@ -91,9 +94,18 @@ const GymBarGraphHorizontal = ({ gymId, selectedMonth }) => {
     //   .call(yAxis);
   }
   useEffect(
-    makeBars,
+    () => {
+    dispatch(setCourses(
+      `http://localhost:8000/courses`
+    )).then(()=>
+    dispatch(setActivities())).then( makeBars)
+    },
     [],
   );
+  // useEffect(
+  //   makeBars,
+  //   [],
+  // );
   return <div id="graph">
   </div>
 }

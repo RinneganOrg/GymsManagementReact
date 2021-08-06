@@ -2,9 +2,8 @@ import React from 'react';
 import {
   Switch,
   Route,
-  useRouteMatch
 } from "react-router-dom";
-import Login from './login/Login'
+import Authenticate from './authenticate/Authenticate'
 import Gyms from './gyms/Gyms'
 import Trainers from './trainers/Trainers'
 import Trainer from './trainers/Trainer'
@@ -22,8 +21,11 @@ const TheRouter = () => {
 
   return (
     <Switch>
-      <Route path="/login">
-        <Login />
+      <Route path="/signin">
+        <Authenticate mode="signIn" />
+      </Route>
+      <Route path="/signup">
+        <Authenticate mode = "signUp"/>
       </Route>
       <Route exact path="/gyms">
         <Gyms />
@@ -31,60 +33,60 @@ const TheRouter = () => {
       <Route exact path="/trainers">
         <Trainers />
       </Route>
-      <Route path="/trainers/add">
+      <PrivateRoute path="/trainers/add">
         <TrainerForm mode="add" />
-      </Route>
+      </PrivateRoute>
       <Route exact path="/trainers/:trainerId">
         <Trainer />
       </Route>
-      <Route path="/trainers/:trainerId/edit">
+      <PrivateRoute path="/trainers/:trainerId/edit">
         <TrainerForm mode="edit" />
-      </Route>
+      </PrivateRoute>
       <PrivateRoute path="/users">
         <Users />
       </PrivateRoute>
       <PrivateRoute path="/profile/:userId">
         <Profile />
       </PrivateRoute>
-      <Route path="/gyms/add">
+      <PrivateRoute path="/gyms/add">
         <GymForm mode="add" />
-      </Route>
+      </PrivateRoute>
       <Route exact path="/gyms/:gymId">
         <Gym />
       </Route>
-      <Route path="/gyms/:gymId/edit">
+      <PrivateRoute path="/gyms/:gymId/edit">
         <GymForm mode="edit" />
-      </Route>
+      </PrivateRoute>
       <Route exact path="/gyms/:gymId/trainers">
         <Trainers />
       </Route>
-      <Route path="/gyms/:gymId/trainers/add">
+      <PrivateRoute path="/gyms/:gymId/trainers/add">
         <TrainerForm mode="add" />
-      </Route>
+      </PrivateRoute>
       <Route exact path="/gyms/:gymId/trainers/:trainerId">
         <Trainer />
       </Route>
-      <Route path="/gyms/:gymId/trainers/:trainerId/edit">
+      <PrivateRoute path="/gyms/:gymId/trainers/:trainerId/edit">
         <TrainerForm mode="edit" />
-      </Route>
+      </PrivateRoute>
       <Route exact path="/gyms/:gymId/courses">
         <Courses />
       </Route>
-      <Route path="/gyms/:gymId/courses/add">
+      <PrivateRoute path="/gyms/:gymId/courses/add">
         <CourseForm mode="add" />
-      </Route>
+      </PrivateRoute>
       <Route exact path="/gyms/:gymId/courses/:courseId">
         <Course />
       </Route>
       <Route exact path="/gyms/:gymId/courses/:courseId/trainers/:trainerId">
         <Trainer />
       </Route>
-      <Route exact path="/gyms/:gymId/courses/:courseId/trainers/:trainerId/edit">
+      <PrivateRoute exact path="/gyms/:gymId/courses/:courseId/trainers/:trainerId/edit">
         <TrainerForm mode="edit" />
-      </Route>
-      <Route path="/gyms/:gymId/courses/:courseId/edit">
+      </PrivateRoute>
+      <PrivateRoute path="/gyms/:gymId/courses/:courseId/edit">
         <CourseForm mode="edit" />
-      </Route>
+      </PrivateRoute>
     </Switch>
   )
 }

@@ -3,6 +3,10 @@ import { Dropdown, Modal, Button, Input, Header, List, Image, Label, Icon, Grid 
 import { useSelector, useDispatch } from 'react-redux'
 import { addActivity, editActivity, deleteActivity } from '../store/actions/activities'
 import moment from 'moment'
+import { setActivities } from "../store/actions/activities";
+import { setCourses } from "../store/actions/courses";
+import { setTrainers } from "../store/actions/trainers";
+import { useAuth } from '../Utils/context';
 
 const CoursesCalendar = ({ gymId, userId }) => {
   const months =
@@ -22,8 +26,8 @@ const CoursesCalendar = ({ gymId, userId }) => {
   const courses2 = useSelector(state =>
     state.courses.courses
       .map(course => ({
-        key: course.id,
-        value: course.id,
+        key: course._id,
+        value: course._id,
         text: course.name,
         color: course.color
       }))
@@ -32,40 +36,45 @@ const CoursesCalendar = ({ gymId, userId }) => {
     state.courses.courses
       .filter(course => course.gymId + '' === gymId)
       .map(course => ({
-        key: course.id,
-        value: course.id,
+        key: course._id,
+        value: course._id,
         text: course.name,
         color: course.color
       }))
   )
   const trainers = useSelector(state =>
     state.trainers.trainers
+      // .filter(trainer => trainer.gymId  === gymId)
       .map(trainer => ({
-        trainerGymId: gymId,
-        trainerId: trainer.id,
+        trainerGymId: trainer.gymId,
+        trainerId: trainer._id,
         trainerName: trainer.name,
         trainerImage: trainer.image
       }))
   )
-  const trainersToChoose = trainers.filter(trainer => trainer.trainerGymId + '' === gymId).map(trainer => ({
-    key: trainer.trainerId,
-    value: trainer.trainerId,
-    text: trainer.trainerName,
-    image: { avatar: true, src: trainer.trainerImage },
-  }))
+  const trainersToChoose = trainers
+    .filter(trainer => trainer.trainerGymId + '' === gymId)
+    .map(trainer => ({
+      key: trainer.trainerId,
+      value: trainer.trainerId,
+      text: trainer.trainerName,
+      image: { avatar: true, src: trainer.trainerImage },
+    }))
 
   const activities = useSelector(state => state.activities.activities
     .filter(activity =>
-      (gymId && activity.gymId + '' === gymId) ||
-      (userId && activity.userIds.includes(parseInt(userId)))))
+      (gymId && activity.gymId + '' === gymId)
+      ||
+      (userId && activity.userIds && activity.userIds.includes(userId))))
 
   const activitiesData = activities.map((activity) => {
     const course = courses2.find(courseItem => courseItem.value === activity.courseId)
     const trainer = trainers.find(trainerItem => trainerItem.trainerId === activity.trainerId)
-    return Object.assign({}, activity, { ...course }, { ...trainer })
+    return Object.assign({}, activity, {...course}, { ...trainer })
   })
-
+console.log(activitiesData)
   const dispatch = useDispatch()
+  let auth = useAuth();
 
   const [selectedMonth, setCurrentMonth] = useState(new Date().getMonth() + 1)
   const [daysOfTheMonth, setDaysOfTheMonth] = useState([])
@@ -80,20 +89,23 @@ const CoursesCalendar = ({ gymId, userId }) => {
   const [showEditMode, setShowEditMode] = useState(false)
 
   const changeDisplayModal = (day) => {
-    setSelectedCourse('')
-    setSelectedTrainer('')
-    setStartDate(`2021-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
-    setEndDate(`2021-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
-    setMaxAttendance(0)
-    setSelectedActivity({})
-    if (day.dayNumber) {
-      setSelectedDay(day.dayNumber)
+    if (auth && auth.role === "admin") {
+      setSelectedCourse('')
+      setSelectedTrainer('')
+      setStartDate(`2021-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
+      setEndDate(`2021-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
+      setMaxAttendance(0)
+      setSelectedActivity({})
+      if (day.dayNumber) {
+        setSelectedDay(day.dayNumber)
+      }
+      if (!userId)
+        setShowEditModal(!showEditModal)
+      setShowEditMode(!showEditMode)
     }
-    if (!userId)
-      setShowEditModal(!showEditModal)
-    setShowEditMode(!showEditMode)
   }
   const changeDisplayEditModal = (event, activity, dayNumber) => {
+    console.log("activ", activity)
     event.stopPropagation()
     if (activity) {
       setSelectedActivity(activity)
@@ -104,26 +116,37 @@ const CoursesCalendar = ({ gymId, userId }) => {
     setShowEditModal(!showEditModal)
   }
   const changeShowEditMode = () => {
+    let startDateOfSelectedActivity = new Date(selectedActivity.startDate)
+    let endDateOfSelectedActivity = new Date(selectedActivity.endDate)
     setSelectedCourse(selectedActivity.courseId)
     setSelectedTrainer(selectedActivity.trainerId)
     setMaxAttendance(selectedActivity.maxAttendance)
-    setStartDate(selectedActivity.startDate)
-    setEndDate(selectedActivity.endDate)
+    setStartDate(
+      `${startDateOfSelectedActivity.getFullYear()}-${('0' + (startDateOfSelectedActivity.getMonth() + 1)).slice(-2)}-${('0' + startDateOfSelectedActivity.getDate()).slice(-2)}`
+    )
+    setEndDate(
+      `${endDateOfSelectedActivity.getFullYear()}-${('0' + (endDateOfSelectedActivity.getMonth() + 1)).slice(-2)}-${('0' + endDateOfSelectedActivity.getDate()).slice(-2)}`
+    )
     setShowEditMode(!showEditMode)
   }
   const onAddActivity = () => {
     if (maxAttendance >= 0) {
       let activity = {
-        gymId: parseInt(gymId),
-        courseId: parseInt(selectedCourse),
-        trainerId: parseInt(selectedTrainer),
+        gymId: gymId,
+        courseId: selectedCourse,
+        trainerId: selectedTrainer,
         currentAttendance: 0,
         maxAttendance: parseInt(maxAttendance),
         startDate: startDate,
         endDate: endDate,
         userIds: []
       }
-      dispatch(addActivity(activity))
+      dispatch(addActivity(
+        "http://localhost:8000/activities",
+        {
+          'Content-Type': 'application/json'
+        },
+        activity))
       setShowEditModal(false)
       setShowEditMode(false)
     }
@@ -131,26 +154,37 @@ const CoursesCalendar = ({ gymId, userId }) => {
   const onEditActivity = () => {
     if (maxAttendance > selectedActivity.currentAttendance) {
       let activity = {
-        id: selectedActivity.id,
-        gymId: parseInt(gymId),
-        courseId: parseInt(selectedCourse),
-        trainerId: parseInt(selectedTrainer),
+        id: selectedActivity._id,
+        gymId: gymId,
+        courseId: selectedCourse,
+        trainerId: selectedTrainer,
         maxAttendance: parseInt(maxAttendance),
         currentAttendance: selectedActivity.currentAttendance,
         startDate: startDate,
         endDate: endDate,
         userIds: selectedActivity.userIds
       }
-      let course = courses.find(course => course.key === parseInt(selectedCourse))
-      let trainer = trainers.find(trainer => trainer.trainerId === parseInt(selectedTrainer))
+      let course = courses.find(course => course.key === selectedCourse)
+      let trainer = trainers.find(trainer => trainer.trainerId === selectedTrainer)
       let activityToDisplay = { ...selectedActivity, startDate: startDate, maxAttendance: maxAttendance, endDate: endDate, text: course.text, trainerName: trainer.trainerName, trainerImage: trainer.trainerImage }
-      dispatch(editActivity(activity))
+      dispatch(editActivity(
+        `http://localhost:8000/activities/${selectedActivity._id}`,
+        {
+          'Content-Type': 'application/json'
+        },
+        activity
+      ))
       setSelectedActivity(activityToDisplay)
       setShowEditMode(false)
     }
   }
   const onDeleteActivity = () => {
-    dispatch(deleteActivity(selectedActivity))
+    dispatch(deleteActivity(
+      `http://localhost:8000/activities/${selectedActivity._id}`,
+      {
+        'Content-Type': 'application/json'
+      }
+    ))
     setShowEditModal(false)
   }
   const changeMonth = (e, { value }) => {
@@ -175,7 +209,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
   const fillCalendarDays = (selectedMonthIndex) => {
     let selectedMonthItem = months[selectedMonthIndex - 1]
 
-    let selectedMonthDays = Array(selectedMonthItem.daysInMonth)
+    let selectedMonthDays = Array(selectedMonthItem.daysInMonth - 1)
       .fill(0)
       .map((day, i) => ({
         dayNumber: i + 1,
@@ -185,13 +219,16 @@ const CoursesCalendar = ({ gymId, userId }) => {
 
     let firstDayOfTheMonthDate = `${selectedMonthIndex} 1 2021`
     let firstDayOfTheMonthWeekIndex = new Date(firstDayOfTheMonthDate).getDay()
-    let previousMonthDisabledDays = Array(firstDayOfTheMonthWeekIndex - 1)
+
+    const previousMonthDisabledDays = Array(firstDayOfTheMonthWeekIndex === 0 ?
+      6 : firstDayOfTheMonthWeekIndex - 1)
       .fill(0)
       .map((previousMonthDisabledDay, i) => ({
         dayNumber: months[selectedMonthItem.value].daysInMonth - i,
         class: "day day--disabled",
         month: selectedMonthIndex - 1
       }))
+
 
     let lastDayOfTheMonthDate = `${selectedMonthIndex} ${selectedMonthItem.daysInMonth} 2021`
     let lastDayOfTheMonthWeekIndex = new Date(lastDayOfTheMonthDate).getDay()
@@ -210,38 +247,49 @@ const CoursesCalendar = ({ gymId, userId }) => {
     let activity = {}
     if (selectedActivity.currentAttendance < selectedActivity.maxAttendance) {
       activity = {
-        id: selectedActivity.id,
+        id: selectedActivity._id,
         gymId: selectedActivity.gymId,
-        courseId: parseInt(selectedActivity.courseId),
-        trainerId: parseInt(selectedActivity.trainerId),
+        courseId: selectedActivity.courseId,
+        trainerId: selectedActivity.trainerId,
         currentAttendance: ++selectedActivity.currentAttendance,
         maxAttendance: selectedActivity.maxAttendance,
         startDate: selectedActivity.startDate,
         endDate: selectedActivity.endDate,
         userIds: selectedActivity.userIds
       }
-      activity.userIds.push(1)
+      console.log(activity)
+      activity.userIds.push(auth._id)
+      dispatch(editActivity(
+        `http://localhost:8000/activities/${selectedActivity._id}`,
+        {
+          'Content-Type': 'application/json'
+        },
+        activity))
     }
-    dispatch(editActivity(activity))
   }
   const leaveCourse = () => {
     let activity = {}
     activity = {
-      id: selectedActivity.id,
+      id: selectedActivity._id,
       gymId: selectedActivity.gymId,
-      courseId: parseInt(selectedActivity.courseId),
-      trainerId: parseInt(selectedActivity.trainerId),
+      courseId: selectedActivity.courseId,
+      trainerId: selectedActivity.trainerId,
       currentAttendance: --selectedActivity.currentAttendance,
       maxAttendance: selectedActivity.maxAttendance,
       startDate: selectedActivity.startDate,
       endDate: selectedActivity.endDate,
       userIds: selectedActivity.userIds
     }
-    var index = activity.userIds.indexOf(1);
+    let index = activity.userIds.indexOf(auth._id);
     if (index >= 0) {
-      activity.userIds.splice(index, 1);
+      activity.userIds.splice(index, auth._id.length);
     }
-    dispatch(editActivity(activity))
+    dispatch(editActivity(
+      `http://localhost:8000/activities/${selectedActivity._id}`,
+      {
+        'Content-Type': 'application/json'
+      },
+      activity))
     setShowEditModal(false)
   }
   const makeTaskClassName = (activity, day) => {
@@ -276,7 +324,16 @@ const CoursesCalendar = ({ gymId, userId }) => {
   }
 
   useEffect(
-    () => setDaysOfTheMonth(fillCalendarDays(new Date().getMonth() + 1)),
+    () => {
+      setDaysOfTheMonth(fillCalendarDays(new Date().getMonth() + 1))
+      dispatch(setCourses(
+        `http://localhost:8000/courses`
+      ))
+      dispatch(setTrainers(
+        `http://localhost:8000/trainers`
+      ))
+      dispatch(setActivities())
+    },
     [],
   );
   const filterActivities = (activity, dayOfTheMonth) => {
@@ -303,7 +360,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
           onClick={() => changeDisplayModal(dayOfTheMonth)}
         >
           {new Date().getDate() === dayOfTheMonth.dayNumber &&
-            new Date().getMonth() + 1 === selectedMonth ?
+            new Date().getMonth() + 1 === dayOfTheMonth.month ?
             <Label
               circular
               color="blue"
@@ -315,7 +372,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
               {dayOfTheMonth.dayNumber}
             </div>
           }
-          {
+          {activitiesData &&
             activitiesData
               .filter((activity) => filterActivities(activity, dayOfTheMonth))
               .slice(0, 1)
@@ -336,7 +393,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
                 </div>
               )
           }
-          {activitiesData
+          {activitiesData && activitiesData
             .filter((activity) => filterActivities(activity, dayOfTheMonth))
             .length > 1 ?
             <Dropdown text='More' multiple icon='add'>
@@ -379,7 +436,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
     >
       {showEditMode ?
         <>
-          {selectedActivity.id ?
+          {selectedActivity._id ?
             <Modal.Header>Edit event</Modal.Header> :
             <Modal.Header>Add event</Modal.Header>}
           <Modal.Content>
@@ -403,10 +460,10 @@ const CoursesCalendar = ({ gymId, userId }) => {
             <Input type="date" value={endDate} onChange={changeEndDate} />
           </Modal.Content>
           <Modal.Actions>
-            <Button negative onClick={selectedActivity.id ? changeShowEditMode : changeDisplayModal}>
+            <Button negative onClick={selectedActivity._id ? changeShowEditMode : changeDisplayModal}>
               Cancel
             </Button>
-            <Button positive onClick={selectedActivity.id ? onEditActivity : onAddActivity}>
+            <Button positive onClick={selectedActivity._id ? onEditActivity : onAddActivity}>
               Save
             </Button>
           </Modal.Actions>
@@ -468,9 +525,9 @@ const CoursesCalendar = ({ gymId, userId }) => {
                     <Header as="h3">Trainers</Header>
                     <List horizontal>
                       <List.Item>
-                        <Image avatar src={selectedActivity.trainerImage} />
+                        <Image avatar src={selectedActivity.trainerImage } />
                         <List.Content>
-                          <List.Header>{selectedActivity.trainerName}</List.Header>
+                          <List.Header>{selectedActivity.trainerName }</List.Header>
                         </List.Content>
                       </List.Item>
                     </List>
@@ -501,7 +558,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
                       floated="right"
                       color="blue"
                       disabled={selectedActivity.maxAttendance === selectedActivity.currentAttendance ||
-                        new Date(selectedActivity.endDate) < new Date() ?
+                        new Date(selectedActivity.endDate) < new Date() || selectedActivity.userIds.includes(auth._id) ?
                         true : false}
                       onClick={attendCourse}>
                       Attend course</Button> : null}

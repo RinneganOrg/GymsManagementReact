@@ -8,7 +8,6 @@ import Toolbar from './components/Toolbar'
 import TheHeader from './components/TheHeader'
 import TheRouter from './components/TheRouter';
 import ProvideAuth from './components/ProvideAuth'
-import AuthButton from './components/AuthButton'
 import { Grid } from 'semantic-ui-react'
 import './coursesCalendarStyle.css';
 
@@ -23,7 +22,6 @@ export default function App() {
               <Toolbar />
             </Grid.Column>
             <Grid.Column width={13} floated='centered'>
-              <AuthButton />
               <TheRouter />
             </Grid.Column>
           </Grid.Row>

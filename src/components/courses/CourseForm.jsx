@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Menu, Dropdown, Input, Label, Grid, Icon, GridColumn } from 'semantic-ui-react'
 import { Portal } from 'react-portal'
 import SaveButton from '../buttons/SaveButton';
@@ -6,23 +6,28 @@ import CancelButton from '../buttons/CancelButton';
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { addCourse, editCourse } from '../../store/actions/courses'
+import { setTrainers } from '../../store/actions/trainers'
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 
 const CourseForm = (props) => {
   const params = useParams()
   const courseToEdit = useSelector(state =>
-    state.courses.courses.find(course => course.id + '' === params.courseId)
+    state.courses.courses
+      .find(course => course._id + '' === params.courseId)
   )
   const selectTrainers = state => state.trainers.trainers
+  .filter(trainer => trainer.gymId+ '' === params.gymId)
   const trainers = useSelector(selectTrainers)
-    .map(({ id, name, image }) => ({ key: id, text: name, value: id, image: image }))
-  const id = courseToEdit ? courseToEdit.id : ''
+    .map(({ _id, name, image }) => ({ key: _id, text: name, value: _id, image: image }))
+  const id = courseToEdit ? courseToEdit._id : ''
   const gymId = courseToEdit ? courseToEdit.gymId : params.gymId
   const rating = courseToEdit ? courseToEdit.rating : 0
   const [name, setName] = useState(courseToEdit ? courseToEdit.name : '')
   const [description, setDescription] = useState(courseToEdit ? courseToEdit.description : '')
   const [image, setImage] = useState(courseToEdit ? courseToEdit.image : '')
+  const [price, setPrice] = useState(courseToEdit ? courseToEdit.price : '')
+  const [duration, setDuration] = useState(courseToEdit ? courseToEdit.duration : '')
   const [trainersId, setTrainersId] = useState(courseToEdit ? courseToEdit.trainersId : [])
   const [selectedColor, setSelectedColor] = useColor("hex", courseToEdit ? courseToEdit.color : "#121212");
   const [selectedColor1, setSelectedColor1] = useColor("hex", "#121212");
@@ -48,6 +53,12 @@ const CourseForm = (props) => {
   const changeImage = (event) => {
     setImage(event.target.value)
   }
+  const changePrice = (event) => {
+    setPrice(event.target.value)
+  }
+  const changeDuration = (event) => {
+    setDuration(event.target.value)
+  }
   const changeTags = (event) => {
     setTags(event.target.value)
   }
@@ -63,11 +74,15 @@ const CourseForm = (props) => {
       tags: tagsArray,
       rating,
       trainersId,
+      price,
+      duration,
       color: selectedColor.hex
     }
 
     if (props.mode === "add") {
-      dispatch(addCourse(course))
+      dispatch(addCourse(
+        "http://localhost:8000/courses",
+        course))
     }
     else if (props.mode === "edit") {
       let courseEdited =
@@ -79,10 +94,14 @@ const CourseForm = (props) => {
         image,
         tags: tagsArray,
         rating,
+        price,
+        duration,
         trainersId,
         color: selectedColor.hex
       }
-      dispatch(editCourse(courseEdited))
+      dispatch(editCourse(
+        `http://localhost:8000/courses/${params.courseId}`,
+        courseEdited))
     }
   }
   const handleChange = (e, { value }) => {
@@ -91,6 +110,15 @@ const CourseForm = (props) => {
   const displayColorPicker = () => {
     setIsVisibleColorPicker(!isVisibleColorPicker)
   }
+  useEffect(
+    () => {
+      dispatch(setTrainers(
+        `http://localhost:8000/trainers`
+      ))
+    }
+    ,
+    []
+  )
   return (
     <Form>
       <Form.Field>
@@ -115,6 +143,22 @@ const CourseForm = (props) => {
           onChange={changeImage} />
       </Form.Field>
       <Form.Field>
+        <label>Price</label>
+        <Input
+          placeholder='Price'
+          value={price}
+          type="number"
+          onChange={changePrice} />
+      </Form.Field>
+      <Form.Field>
+        <label>Duration</label>
+        <Input
+          placeholder='Duration'
+          value={duration}
+          type="number"
+          onChange={changeDuration} />
+      </Form.Field>
+      <Form.Field>
         <label>Tags</label>
         <Input
           placeholder='Tags'
@@ -136,20 +180,20 @@ const CourseForm = (props) => {
         <Grid.Row columns={3} className="color-picker-grid">
           <h5>Course color</h5>
           <div onClick={displayColorPicker} >
-          <Label circular size="mini" className="color-label-course-form" style={{
-            backgroundColor: `${selectedColor.hex}`
-          }} />
-          <Icon
-            name={isVisibleColorPicker ? 'cancel' : 'pencil'}
-            color={isVisibleColorPicker ? 'red' : 'grey'}
-            className="color-icon-course-form" />
-            </div>
+            <Label circular size="mini" className="color-label-course-form" style={{
+              backgroundColor: `${selectedColor.hex}`
+            }} />
+            <Icon
+              name={isVisibleColorPicker ? 'cancel' : 'pencil'}
+              color={isVisibleColorPicker ? 'red' : 'grey'}
+              className="color-icon-course-form" />
+          </div>
           {isVisibleColorPicker ?
             <ColorPicker width={256} height={128} color={selectedColor} onChange={setSelectedColor} hideHSV hideRGB dark />
             : null}
         </Grid.Row>
       </Grid>
-      
+
       {isToolbarReady && <Portal node={document.getElementById("operationSection")}>
         <Menu.Item>
           <SaveButton onSubmit={onSubmit} path={location.pathname} mode={props.mode} />

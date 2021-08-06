@@ -6,20 +6,7 @@ import { Portal } from 'react-portal'
 import CoursesCalendar from "../CoursesCalendar";
 
 const Profile = () => {
-  let { userId } = useParams();
-  const users = useSelector(state => state.users.users
-    .filter(user => user.id + '' === userId))
-  const courses = useSelector(state =>
-    state.courses.courses)
-  const trainers = useSelector(state =>
-    state.trainers.trainers)
-  const activities = useSelector(state =>
-    state.activities.activities).filter(activity => activity.userIds.includes(parseInt(userId)))
-  const userActivities = activities.map((activity) => {
-    const course = courses.find(courseItem => courseItem.id === activity.courseId)
-    const trainer = trainers.find(trainerItem => trainerItem.trainerId === activity.trainerId)
-    return Object.assign({}, activity, { ...course }, { ...trainer })
-  })
+  let { userId } = useParams()
   const selectIsToolbarReady = state => state.toolbar
   const { isToolbarReady } = useSelector(selectIsToolbarReady)
 
@@ -28,9 +15,9 @@ const Profile = () => {
     setDisplaySection(!displaySection)
   }
   return <>
-  <h3>Hello hi this is your profile</h3>
+    <h3>Welcome to your profile</h3>
     {isToolbarReady &&
-      <Portal node={document.getElementById("operationSection")}>
+      <Portal node={document.getElementById("childrenSection")}>
         <Menu.Item>
           <Icon
             name="calendar alternate outline"

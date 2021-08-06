@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Rating } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addComment, editComment } from '../../store/actions/comments'
+import { useAuth } from '../../Utils/context';
 
 const CommentForm = ({ gymId, trainerId, courseId, mode, commentId, changeMode }) => {
   const commentToEdit = useSelector(state =>
-    state.comments.comments.find(comment => comment.id === commentId))
+    state.comments.comments.find(comment => comment._id === commentId))
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   useEffect(
@@ -17,6 +18,7 @@ const CommentForm = ({ gymId, trainerId, courseId, mode, commentId, changeMode }
     },
     [commentToEdit],
   );
+  let auth = useAuth();
   const dispatch = useDispatch()
   const changeComment = (event) => {
     setComment(event.target.value)
@@ -24,14 +26,13 @@ const CommentForm = ({ gymId, trainerId, courseId, mode, commentId, changeMode }
   const handleRate = (event, { rating }) => {
     setRating(rating)
   }
-
   const submitComment = () => {
     if (mode === 'add') {
       let commentToAdd = {
-        gymId,
-        trainerId,
-        courseId,
-        userId: 1,
+        gymId: gymId ? gymId : null,
+        trainerId: trainerId ? trainerId : null,
+        courseId: courseId ? courseId : null,
+        userId: auth._id,
         comment,
         rating
       }
@@ -39,14 +40,16 @@ const CommentForm = ({ gymId, trainerId, courseId, mode, commentId, changeMode }
     } else if (mode === 'edit') {
       let commentToEdit = {
         id: commentId,
-        gymId,
-        trainerId,
-        courseId,
-        userId: 1,
+        gymId: gymId ? gymId : null,
+        trainerId: trainerId ? trainerId : null,
+        courseId: courseId ? courseId : null,
+        userId: auth._id,
         comment,
         rating
       }
-      dispatch(editComment(commentToEdit))
+      dispatch(editComment(
+        `http://localhost:8000/comments/${commentId}`,
+        commentToEdit))
       changeMode()
     }
     setComment('')

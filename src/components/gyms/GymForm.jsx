@@ -5,14 +5,14 @@ import SaveButton from '../buttons/SaveButton';
 import CancelButton from '../buttons/CancelButton';
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addGym, editGym } from '../../store/actions/gyms'
+import { addGym, editGym, addGymToDb } from '../../store/actions/gyms'
 
 const GymForm = (props) => {
   const params = useParams()
   const gymToEdit = useSelector(state =>
-    state.gyms.gyms.find(gym => gym.id + '' === params.gymId)
+    state.gyms.gyms.find(gym => gym._id + '' === params.gymId)
   )
-  const [id, setId] = useState(gymToEdit ? gymToEdit.id : '');
+  const [id, setId] = useState(gymToEdit ? gymToEdit._id : '');
   const [name, setName] = useState(gymToEdit ? gymToEdit.name : '');
   const rating = gymToEdit ? gymToEdit.rating : 0
   const [address, setAddress] = useState(gymToEdit ? gymToEdit.address : '');
@@ -48,13 +48,32 @@ const GymForm = (props) => {
   }
   const onSubmit = () => {
     let tagsArray = tags.split(',');
-    let gym = { name, address, description, image, tags: tagsArray, rating }
+    let gym = {
+      name,
+      address,
+      description,
+      image,
+      tags: tagsArray,
+      rating
+    }
     if (props.mode === "add") {
-      dispatch(addGym(gym))
+      dispatch(addGym(
+        "http://localhost:8000/gyms",
+        gym))
     }
     else if (props.mode === "edit") {
-      let gymEdited = { id, name, address, description, image, tags: tagsArray, rating }
-      dispatch(editGym(gymEdited))
+      let gymEdited = {
+        id,
+        name,
+        address,
+        description,
+        image,
+        tags: tagsArray,
+        rating
+      }
+      dispatch(editGym(
+        `http://localhost:8000/gyms/${params.gymId}`,
+        gymEdited))
     }
   }
 

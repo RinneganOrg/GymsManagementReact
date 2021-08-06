@@ -1,8 +1,12 @@
 import { authContext } from '../Utils/context';
-import { useProvideAuth } from '../Utils/auth'
+import { useSelector } from 'react-redux'
 
 function ProvideAuth({ children }) {
-  const auth = useProvideAuth();
+  const users = useSelector(state =>
+    state.users.users
+  )
+  const auth = users;
+  console.log(auth)
   return (
     <authContext.Provider value={auth}>
       {children}

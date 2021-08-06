@@ -1,13 +1,60 @@
-export function setUsers(users) {
-  return { 
-    type: 'SET_USERS',
-    users
+export function setUsers() {
+  return (dispatch) => {
+    return fetch("http://localhost:8000/users", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        dispatch({ type: "SET_USERS", users: result.data })
+        return { message: result.message, status: result.success }
+      })
   }
 }
 
-export function addUser(user) {
-  return { 
-    type: 'ADD_USER',
-    user
+export function signUp(body) {
+  return (dispatch) => {
+    return fetch("http://localhost:8000/users/signup", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        dispatch({ type: "AUTHENTICATE", user: result.user })
+        return { message: result.message, status: result.success }
+      })
+  }
+}
+
+export function signIn(body) {
+  return (dispatch) => {
+    return fetch("http://localhost:8000/users/signin", {
+      credentials: "same-origin",
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        dispatch({ type: "AUTHENTICATE", user: result.user })
+        return {
+          message: result.message,
+          status: result.success,
+          accessToken: result.accessToken
+        }
+      })
+  }
+}
+
+export function signOut() {
+  return {
+    type: "SIGN_OUT"
   }
 }
