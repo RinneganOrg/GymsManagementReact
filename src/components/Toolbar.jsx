@@ -15,7 +15,8 @@ const Toolbar = () => {
   );
   let auth = useAuth();
   return (
-    <Menu vertical icon borderless className="flexed">
+    <Menu vertical icon borderless fixed="left" attached="bottom" className="flexed" 
+    style={{top: '40px', height: "calc(100% - 40px)", display: "flex", flexDirection: 'column', paddingBottom: '30px'}}>
       {auth && auth.role === "admin" ?
         <Menu.Item>
           <Menu.Menu id="operationSection">
@@ -29,7 +30,7 @@ const Toolbar = () => {
         <Menu.Menu id="contentSection">
         </Menu.Menu>
       </Menu.Item>
-      <Dropdown item icon='grey big user circle' simple>
+      <Dropdown item icon='grey big user circle' upward style={{marginTop: "auto"}}>
         <Dropdown.Menu>
           <AuthButton />
           {auth ?

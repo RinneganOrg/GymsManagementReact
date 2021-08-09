@@ -44,7 +44,6 @@ const CoursesCalendar = ({ gymId, userId }) => {
   )
   const trainers = useSelector(state =>
     state.trainers.trainers
-      // .filter(trainer => trainer.gymId  === gymId)
       .map(trainer => ({
         trainerGymId: trainer.gymId,
         trainerId: trainer._id,

@@ -9,8 +9,7 @@ const TheHeader = () => {
   let auth = useAuth();
 
   return (
-    <Segment >
-      <Menu secondary>
+      <Menu fixed="top">
         <Menu.Item
           name='Gyms'
           active={activeItem === 'Gyms'}
@@ -32,7 +31,6 @@ const TheHeader = () => {
             as={Link} to="/users">Users
           </Menu.Item> : null}
       </Menu>
-    </Segment>
   )
 }
 export default TheHeader;

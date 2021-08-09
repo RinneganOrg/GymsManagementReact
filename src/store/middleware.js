@@ -1,4 +1,4 @@
-export default (api) => ({ dispatch, getState }) => (next) => (action) => {
+export default () => ({ dispatch, getState }) => (next) => (action) => {
   if (typeof action === "function") {
     return action(dispatch, getState)
   }

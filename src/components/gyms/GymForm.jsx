@@ -5,7 +5,7 @@ import SaveButton from '../buttons/SaveButton';
 import CancelButton from '../buttons/CancelButton';
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addGym, editGym, addGymToDb } from '../../store/actions/gyms'
+import { addGym, editGym } from '../../store/actions/gyms'
 
 const GymForm = (props) => {
   const params = useParams()
