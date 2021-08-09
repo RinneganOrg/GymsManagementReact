@@ -69,9 +69,8 @@ const CoursesCalendar = ({ gymId, userId }) => {
   const activitiesData = activities.map((activity) => {
     const course = courses2.find(courseItem => courseItem.value === activity.courseId)
     const trainer = trainers.find(trainerItem => trainerItem.trainerId === activity.trainerId)
-    return Object.assign({}, activity, {...course}, { ...trainer })
+    return Object.assign({}, activity, { ...course }, { ...trainer })
   })
-console.log(activitiesData)
   const dispatch = useDispatch()
   let auth = useAuth();
 
@@ -104,7 +103,6 @@ console.log(activitiesData)
     }
   }
   const changeDisplayEditModal = (event, activity, dayNumber) => {
-    console.log("activ", activity)
     event.stopPropagation()
     if (activity) {
       setSelectedActivity(activity)
@@ -256,7 +254,6 @@ console.log(activitiesData)
         endDate: selectedActivity.endDate,
         userIds: selectedActivity.userIds
       }
-      console.log(activity)
       activity.userIds.push(auth._id)
       dispatch(editActivity(
         `http://localhost:8000/activities/${selectedActivity._id}`,
@@ -524,9 +521,9 @@ console.log(activitiesData)
                     <Header as="h3">Trainers</Header>
                     <List horizontal>
                       <List.Item>
-                        <Image avatar src={selectedActivity.trainerImage } />
+                        <Image avatar src={selectedActivity.trainerImage} />
                         <List.Content>
-                          <List.Header>{selectedActivity.trainerName }</List.Header>
+                          <List.Header>{selectedActivity.trainerName}</List.Header>
                         </List.Content>
                       </List.Item>
                     </List>

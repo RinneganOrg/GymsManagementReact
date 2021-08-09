@@ -23,7 +23,6 @@ export function setCourse(url) {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result)
         dispatch({ type: "SET_COURSE", course: result.data })
       })
   }

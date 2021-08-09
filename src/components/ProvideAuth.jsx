@@ -6,7 +6,7 @@ function ProvideAuth({ children }) {
     state.users.users
   )
   const auth = users;
-  console.log(auth)
+
   return (
     <authContext.Provider value={auth}>
       {children}

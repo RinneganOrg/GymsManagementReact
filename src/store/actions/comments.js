@@ -55,7 +55,6 @@ export function deleteComment(url) {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result)
         dispatch({ type: "DELETE_COMMENT", comment: result.data })
       })
   }

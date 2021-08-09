@@ -11,10 +11,9 @@ const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
   )
   const courses = useSelector(state =>
     state.courses.courses
-    .filter(course => course.gymId + '' === gymId)
+      .filter(course => course.gymId + '' === gymId)
   )
-  console.log(courses)
-  console.log(activities)
+
   const monthsArray = Array(12).fill(0)
   const monthlyRevenue = monthsArray.map((month, monthIndex) => {
     const currentMonthActivities = activities.filter(activity => {
@@ -22,7 +21,6 @@ const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
       return activityStartDate.getMonth() === monthIndex  //getMonth() Jan is considered 0
     })
     const reducer = (accumulator, activity) => {
-      console.log(activity)
       const course = courses.find(courseItem => courseItem._id === activity.courseId)
       return accumulator + activity.currentAttendance * course.price
     }
@@ -89,8 +87,6 @@ const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
         index.set(this, i);
       })
       .on('click', function (e, d, i) {
-        console.log(d);
-        console.log(index.get(this));
         handleChangeCourseBars(index.get(this))
       })
   }
@@ -98,9 +94,9 @@ const GymGraphScatter = ({ gymId, handleChangeCourseBars }) => {
     () => {
       dispatch(setCourses(
         `http://localhost:8000/courses`
-        )).then(() =>
-        dispatch(setActivities())).then(()=>
-        createGraph())
+      )).then(() =>
+        dispatch(setActivities())).then(() =>
+          createGraph())
     },
     [],
   );

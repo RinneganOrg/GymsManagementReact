@@ -49,7 +49,6 @@ export function deleteActivity(url, headers) {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result)
         dispatch({ type: "DELETE_ACTIVITY", activity: result.data })
       })
   }

@@ -6,7 +6,6 @@ import { useAuth } from '../Utils/context';
 
 function PrivateRoute({ children, ...rest }) {
   let auth = useAuth();
-  console.log(auth)
   return (
     <Route
       {...rest}
