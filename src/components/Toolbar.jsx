@@ -30,7 +30,7 @@ const Toolbar = () => {
         <Menu.Menu id="contentSection">
         </Menu.Menu>
       </Menu.Item>
-      <Dropdown item icon='grey big user circle' upward style={{marginTop: "auto"}}>
+      <Dropdown item icon='big user circle' upward style={{marginTop: "auto"}}>
         <Dropdown.Menu>
           <AuthButton />
           {auth ?

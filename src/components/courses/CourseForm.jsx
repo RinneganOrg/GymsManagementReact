@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Menu, Dropdown, Input, Label, Grid, Icon, GridColumn } from 'semantic-ui-react'
+import { Form, Menu, Dropdown, Input, Label, Grid, Icon } from 'semantic-ui-react'
 import { Portal } from 'react-portal'
 import SaveButton from '../buttons/SaveButton';
 import CancelButton from '../buttons/CancelButton';
@@ -30,8 +30,7 @@ const CourseForm = (props) => {
   const [duration, setDuration] = useState(courseToEdit ? courseToEdit.duration : '')
   const [trainersId, setTrainersId] = useState(courseToEdit ? courseToEdit.trainersId : [])
   const [selectedColor, setSelectedColor] = useColor("hex", courseToEdit ? courseToEdit.color : "#121212");
-  const [selectedColor1, setSelectedColor1] = useColor("hex", "#121212");
-  const [isVisibleColorPicker, setIsVisibleColorPicker] = useState(false)
+   const [isVisibleColorPicker, setIsVisibleColorPicker] = useState(false)
   let courseToEditTags = ''
   if (courseToEdit) {
     courseToEditTags = courseToEdit.tags.join(", ")
@@ -117,7 +116,7 @@ const CourseForm = (props) => {
       ))
     }
     ,
-    []
+    [dispatch]
   )
   return (
     <Form>

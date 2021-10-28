@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { setUsers } from "../../store/actions/users";
-import { Card, List, Menu, Input, Dropdown, Button, Icon } from 'semantic-ui-react'
+import { Card, List, Menu, Input, Dropdown} from 'semantic-ui-react'
 
 const Users = () => {
   const dispatch = useDispatch()

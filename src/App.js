@@ -21,7 +21,7 @@ export default function App() {
             <Grid.Column width={1}>
               <Toolbar />
             </Grid.Column>
-            <Grid.Column width={13} floated='centered'>
+            <Grid.Column width={13} floated={"centered"}>
               <TheRouter />
             </Grid.Column>
           </Grid.Row>
