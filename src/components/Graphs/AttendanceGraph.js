@@ -18,12 +18,15 @@ const months = [
   "Mar",
   "Apr",
   "May",
+  "Jun",
+  "Jul",
   "Aug",
   "Sep",
   "Oct",
   "Nov",
   "Dec",
 ];
+
 const delayAnimations = new Map();
 const getActivity = new Map();
 var delay = 400;
