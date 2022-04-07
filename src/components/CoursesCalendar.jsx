@@ -76,7 +76,6 @@ const CoursesCalendar = ({ gymId, userId }) => {
 
   const [selectedMonth, setCurrentMonth] = useState(new Date().getMonth() + 1)
   const [daysOfTheMonth, setDaysOfTheMonth] = useState([])
-  const [selectedDay, setSelectedDay] = useState('')
   const [selectedActivity, setSelectedActivity] = useState({})
   const [selectedCourse, setSelectedCourse] = useState()
   const [maxAttendance, setMaxAttendance] = useState(0)
@@ -94,9 +93,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
       setEndDate(`2021-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
       setMaxAttendance(0)
       setSelectedActivity({})
-      if (day.dayNumber) {
-        setSelectedDay(day.dayNumber)
-      }
+     
       if (!userId)
         setShowEditModal(!showEditModal)
       setShowEditMode(!showEditMode)
@@ -107,9 +104,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
     if (activity) {
       setSelectedActivity(activity)
     }
-    if (dayNumber) {
-      setSelectedDay(dayNumber)
-    }
+    
     setShowEditModal(!showEditModal)
   }
   const changeShowEditMode = () => {
