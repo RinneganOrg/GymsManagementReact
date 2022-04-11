@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
   Link,
-  useRouteMatch,
-  useLocation,
   useParams
 } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { Card, Image, List, Menu, Rating, Input, Dropdown, Button } from 'semantic-ui-react'
 import AddButton from '../buttons/AddButton';
 import { Portal } from 'react-portal'
-import { setTrainers } from "../../store/actions/trainers";
+import { setTrainersAsync } from "../../store/reducers/trainers";
 
 const Trainers = () => {
-  const location = useLocation()
   const params = useParams()
   const dispatch = useDispatch()
   const [displayStyle, setDisplayStyle] = useState(false)
@@ -65,14 +62,14 @@ const Trainers = () => {
 
   useEffect(
     () => {
-        dispatch(setTrainers(
+        dispatch(setTrainersAsync(
           `http://localhost:8000/trainers`
         ))
     }
     ,
     []
   )
-  let { url } = useRouteMatch();
+
   return (
     <div>
       {params.gymId ?
@@ -148,7 +145,7 @@ const Trainers = () => {
                   <List.Item key={trainer._id}>
                     <Image avatar src={trainer.image} />
                     <List.Content>
-                      <List.Header as={Link} to={`${url}/${trainer._id}`}>{trainer.name}</List.Header>
+                      <List.Header as={Link} to={`${trainer._id}`}>{trainer.name}</List.Header>
                       <Rating icon='star' defaultRating={trainer.rating} maxRating={5} disabled />
                       {trainer.tags.map((tag, index) =>
                         <p key={index}>{tag}</p>
@@ -167,7 +164,7 @@ const Trainers = () => {
                 filterTrainers(trainer))
                 .sort((trainer1, trainer2) => orderTrainers(trainer1, trainer2))
                 .map((trainer) => (
-                  <Card key={trainer._id} as={Link} to={`${url}/${trainer._id}`}>
+                  <Card key={trainer._id} as={Link} to={`${trainer._id}`}>
                     <Image src={trainer.image} wrapped ui={false} />
                     <Card.Content>
                       <Card.Header>{trainer.name}</Card.Header>
@@ -186,7 +183,7 @@ const Trainers = () => {
       {isToolbarReady && document.getElementById("operationSection") &&
         <Portal node={document.getElementById("operationSection")}>
           <Menu.Item>
-            <AddButton path={location.pathname} />
+            <AddButton />
           </Menu.Item>
         </Portal>}
       <br />

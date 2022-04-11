@@ -5,7 +5,7 @@ import SaveButton from '../buttons/SaveButton';
 import CancelButton from '../buttons/CancelButton';
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addGym, editGym } from '../../store/actions/gyms'
+import { addGymAsync, editGymAsync } from '../../store/reducers/gyms'
 
 const GymForm = (props) => {
   const params = useParams()
@@ -57,7 +57,7 @@ const GymForm = (props) => {
       rating
     }
     if (props.mode === "add") {
-      dispatch(addGym(
+      dispatch(addGymAsync(
         "http://localhost:8000/gyms",
         gym))
     }
@@ -71,7 +71,7 @@ const GymForm = (props) => {
         tags: tagsArray,
         rating
       }
-      dispatch(editGym(
+      dispatch(editGymAsync(
         `http://localhost:8000/gyms/${params.gymId}`,
         gymEdited))
     }
@@ -108,7 +108,6 @@ const GymForm = (props) => {
         </Menu.Item>
       </Portal>}
     </Form>
-
   );
 }
 export default GymForm;

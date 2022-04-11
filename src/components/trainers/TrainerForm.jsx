@@ -5,7 +5,7 @@ import SaveButton from '../buttons/SaveButton';
 import CancelButton from '../buttons/CancelButton';
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addTrainer, editTrainer } from '../../store/actions/trainers'
+import { addTrainerAsync, editTrainerAsync } from '../../store/reducers/trainers'
 
 const TrainerForm = (props) => {
   const params = useParams()
@@ -49,13 +49,13 @@ const TrainerForm = (props) => {
     let trainer = { gymId, name, description, image, tags: tagsArray, rating }
 
     if (props.mode === "add") {
-      dispatch(addTrainer(
+      dispatch(addTrainerAsync(
         "http://localhost:8000/trainers",
         trainer))
     }
     else if (props.mode === "edit") {
       let trainerEdited = { id, gymId, name, description, image, tags: tagsArray, rating }
-      dispatch(editTrainer(
+      dispatch(editTrainerAsync(
         `http://localhost:8000/trainers/${params.trainerId}`,
         trainerEdited))
     }

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { setUsers } from "../../store/actions/users";
+import { setUsersAsync } from "../../store/reducers/users";
 import { Card, List, Menu, Input, Dropdown} from 'semantic-ui-react'
 
 const Users = () => {
   const dispatch = useDispatch()
+  
   const selectUsers = state => state.users.usersList
   const users = useSelector(selectUsers)
   const [displayStyle, setDisplayStyle] = useState(false)
@@ -26,16 +27,16 @@ const Users = () => {
 
   const filterUsers = (user) => {
     if (filterCriteria === "role") {
-      return user.role.toLowerCase().includes(userSearched.toLowerCase())
+      return user.role ? user.role.toLowerCase().includes(userSearched.toLowerCase()) : null
     }
     else
-      return user.email.toLowerCase().includes(userSearched.toLowerCase())
+      return user.email ? user.email.toLowerCase().includes(userSearched.toLowerCase()) : null
   }
   const orderUsers = (user1, user2) => {
     return user1.email > user2.email ? 1 : -1
   }
   useEffect(
-    () => dispatch(setUsers()),
+    () => dispatch(setUsersAsync("http://localhost:8000/users")),
     []
   )
   return (

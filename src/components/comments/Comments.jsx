@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import CommentForm from './CommentForm'
 import { Comment, Header, Rating, Icon } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteComment, setComments } from '../../store/actions/comments'
+import { deleteCommentAsync, setCommentsAsync } from '../../store/reducers/comments'
 import { useAuth } from '../../Utils/context';
 
 const Comments = (props) => {
@@ -26,13 +26,13 @@ const Comments = (props) => {
     setMode('add')
   }
   const onDeleteComment = (comment) => {
-    dispatch(deleteComment(
+    dispatch(deleteCommentAsync(
       `http://localhost:8000/comments/${comment._id}`
     )
     )
   }
   useEffect(
-    () => dispatch(setComments()),
+    () => dispatch(setCommentsAsync("http://localhost:8000/comments")),
     []
   )
 

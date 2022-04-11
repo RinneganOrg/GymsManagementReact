@@ -5,8 +5,8 @@ import SaveButton from '../buttons/SaveButton';
 import CancelButton from '../buttons/CancelButton';
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { addCourse, editCourse } from '../../store/actions/courses'
-import { setTrainers } from '../../store/actions/trainers'
+import { addCourseAsync, editCourseAsync } from '../../store/reducers/courses'
+import { setTrainersAsync } from '../../store/reducers/trainers'
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 
@@ -79,7 +79,7 @@ const CourseForm = (props) => {
     }
 
     if (props.mode === "add") {
-      dispatch(addCourse(
+      dispatch(addCourseAsync(
         "http://localhost:8000/courses",
         course))
     }
@@ -98,7 +98,7 @@ const CourseForm = (props) => {
         trainersId,
         color: selectedColor.hex
       }
-      dispatch(editCourse(
+      dispatch(editCourseAsync(
         `http://localhost:8000/courses/${params.courseId}`,
         courseEdited))
     }
@@ -111,7 +111,7 @@ const CourseForm = (props) => {
   }
   useEffect(
     () => {
-      dispatch(setTrainers(
+      dispatch(setTrainersAsync(
         `http://localhost:8000/trainers`
       ))
     }

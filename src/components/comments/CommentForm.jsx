@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Rating } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
-import { addComment, editComment } from '../../store/actions/comments'
+import { addCommentAsync, editCommentAsync } from '../../store/reducers/comments'
 import { useAuth } from '../../Utils/context';
 
 const CommentForm = ({ gymId, trainerId, courseId, mode, commentId, changeMode }) => {
@@ -32,22 +32,22 @@ const CommentForm = ({ gymId, trainerId, courseId, mode, commentId, changeMode }
         gymId: gymId ? gymId : null,
         trainerId: trainerId ? trainerId : null,
         courseId: courseId ? courseId : null,
-        userId: auth._id,
+        userId: auth ? auth._id : null,
         comment,
         rating
       }
-      dispatch(addComment(commentToAdd))
+      dispatch(addCommentAsync("http://localhost:8000/comments", commentToAdd))
     } else if (mode === 'edit') {
       let commentToEdit = {
         id: commentId,
         gymId: gymId ? gymId : null,
         trainerId: trainerId ? trainerId : null,
         courseId: courseId ? courseId : null,
-        userId: auth._id,
+        userId: auth ? auth._id : null,
         comment,
         rating
       }
-      dispatch(editComment(
+      dispatch(editCommentAsync(
         `http://localhost:8000/comments/${commentId}`,
         commentToEdit))
       changeMode()

@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
   Link,
-  useRouteMatch,
-  useLocation,
   useParams
 } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { Card, Image, List, Menu, Rating, Input, Dropdown, Button, Label, Header } from 'semantic-ui-react'
 import AddButton from '../buttons/AddButton';
 import { Portal } from 'react-portal'
-import { setCourses } from '../../store/actions/courses'
+import { setCoursesAsync } from '../../store/reducers/courses'
 
 const Courses = () => {
-  const location = useLocation()
   const params = useParams()
   const dispatch = useDispatch()
 
@@ -64,15 +61,13 @@ const Courses = () => {
 
   useEffect(
     () => {
-      dispatch(setCourses(
+      dispatch(setCoursesAsync(
         `http://localhost:8000/courses`
       ))
     }
     ,
     []
   )
-
-  let { url } = useRouteMatch()
 
   return (
     <div>
@@ -147,7 +142,7 @@ const Courses = () => {
                 <List.Item key={course._id}>
                   <Image avatar src={course.image} />
                   <List.Content>
-                    <Header as={Link} to={`${url}/${course._id}`}>
+                    <Header as={Link} to={`${course._id}`}>
                       <Label circular size="mini" className="course-label" style={{
                         backgroundColor: `${course.color}`
                       }} />
@@ -170,7 +165,7 @@ const Courses = () => {
               filterCourses(course))
               .sort((course1, course2) => orderCourses(course1, course2))
               .map((course) => (
-                <Card key={course._id} as={Link} to={`${url}/${course._id}`}>
+                <Card key={course._id} as={Link} to={`${course._id}`}>
                   <Image src={course.image} wrapped ui={false} />
                   <Card.Content>
                     <Header>
@@ -194,7 +189,7 @@ const Courses = () => {
       {isToolbarReady && document.getElementById("operationSection") &&
         <Portal node={document.getElementById("operationSection")}>
           <Menu.Item>
-            <AddButton path={location.pathname} />
+            <AddButton />
           </Menu.Item>
         </Portal>}
       <br />

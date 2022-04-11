@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown, Modal, Button, Input, Header, List, Image, Label, Icon, Grid } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
-import { addActivity, editActivity, deleteActivity } from '../store/actions/activities'
+import { setActivitiesAsync, addActivityAsync, editActivityAsync, deleteActivityAsync } from '../store/reducers/activities'
 import moment from 'moment'
-import { setActivities } from "../store/actions/activities";
-import { setCourses } from "../store/actions/courses";
-import { setTrainers } from "../store/actions/trainers";
+import { setCoursesAsync } from "../store/reducers/courses";
+import { setTrainersAsync } from "../store/reducers/trainers";
 import { useAuth } from '../Utils/context';
 
 const CoursesCalendar = ({ gymId, userId }) => {
@@ -89,8 +88,8 @@ const CoursesCalendar = ({ gymId, userId }) => {
     if (auth && auth.role === "admin") {
       setSelectedCourse('')
       setSelectedTrainer('')
-      setStartDate(`2021-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
-      setEndDate(`2021-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
+      setStartDate(`2022-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
+      setEndDate(`2022-${('0' + day.month).slice(-2)}-${('0' + day.dayNumber).slice(-2)}`)
       setMaxAttendance(0)
       setSelectedActivity({})
      
@@ -133,11 +132,8 @@ const CoursesCalendar = ({ gymId, userId }) => {
         endDate: endDate,
         userIds: []
       }
-      dispatch(addActivity(
+      dispatch(addActivityAsync(
         "http://localhost:8000/activities",
-        {
-          'Content-Type': 'application/json'
-        },
         activity))
       setShowEditModal(false)
       setShowEditMode(false)
@@ -159,11 +155,8 @@ const CoursesCalendar = ({ gymId, userId }) => {
       let course = courses.find(course => course.key === selectedCourse)
       let trainer = trainers.find(trainer => trainer.trainerId === selectedTrainer)
       let activityToDisplay = { ...selectedActivity, startDate: startDate, maxAttendance: maxAttendance, endDate: endDate, text: course.text, trainerName: trainer.trainerName, trainerImage: trainer.trainerImage }
-      dispatch(editActivity(
+      dispatch(editActivityAsync(
         `http://localhost:8000/activities/${selectedActivity._id}`,
-        {
-          'Content-Type': 'application/json'
-        },
         activity
       ))
       setSelectedActivity(activityToDisplay)
@@ -171,11 +164,8 @@ const CoursesCalendar = ({ gymId, userId }) => {
     }
   }
   const onDeleteActivity = () => {
-    dispatch(deleteActivity(
-      `http://localhost:8000/activities/${selectedActivity._id}`,
-      {
-        'Content-Type': 'application/json'
-      }
+    dispatch(deleteActivityAsync(
+      `http://localhost:8000/activities/${selectedActivity._id}`
     ))
     setShowEditModal(false)
   }
@@ -209,7 +199,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
         month: selectedMonthIndex
       }))
 
-    let firstDayOfTheMonthDate = `${selectedMonthIndex} 1 2021`
+    let firstDayOfTheMonthDate = `${selectedMonthIndex} 1 2022`
     let firstDayOfTheMonthWeekIndex = new Date(firstDayOfTheMonthDate).getDay()
 
     const previousMonthDisabledDays = Array(firstDayOfTheMonthWeekIndex === 0 ?
@@ -222,7 +212,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
       }))
 
 
-    let lastDayOfTheMonthDate = `${selectedMonthIndex} ${selectedMonthItem.daysInMonth} 2021`
+    let lastDayOfTheMonthDate = `${selectedMonthIndex} ${selectedMonthItem.daysInMonth} 2022`
     let lastDayOfTheMonthWeekIndex = new Date(lastDayOfTheMonthDate).getDay()
     let nextMonthDisabledDays = Array(7 - lastDayOfTheMonthWeekIndex)
       .fill(0)
@@ -249,12 +239,9 @@ const CoursesCalendar = ({ gymId, userId }) => {
         endDate: selectedActivity.endDate,
         userIds: selectedActivity.userIds
       }
-      activity.userIds.push(auth._id)
-      dispatch(editActivity(
+      activity.userIds = [...activity.userIds, auth._id]
+      dispatch(editActivityAsync(
         `http://localhost:8000/activities/${selectedActivity._id}`,
-        {
-          'Content-Type': 'application/json'
-        },
         activity))
     }
   }
@@ -271,15 +258,13 @@ const CoursesCalendar = ({ gymId, userId }) => {
       endDate: selectedActivity.endDate,
       userIds: selectedActivity.userIds
     }
-    let index = activity.userIds.indexOf(auth._id);
-    if (index >= 0) {
-      activity.userIds.splice(index, auth._id.length);
-    }
-    dispatch(editActivity(
+    // let index = activity.userIds.indexOf(auth._id);
+    // if (index >= 0) {
+    //   activity.userIds.splice(index, auth._id.length);
+    // }
+    activity.userIds = activity.userIds.filter(id => id !== auth._id)
+    dispatch(editActivityAsync(
       `http://localhost:8000/activities/${selectedActivity._id}`,
-      {
-        'Content-Type': 'application/json'
-      },
       activity))
     setShowEditModal(false)
   }
@@ -317,19 +302,19 @@ const CoursesCalendar = ({ gymId, userId }) => {
   useEffect(
     () => {
       setDaysOfTheMonth(fillCalendarDays(new Date().getMonth() + 1))
-      dispatch(setCourses(
+      dispatch(setCoursesAsync(
         `http://localhost:8000/courses`
       ))
-      dispatch(setTrainers(
+      dispatch(setTrainersAsync(
         `http://localhost:8000/trainers`
       ))
-      dispatch(setActivities())
+      dispatch(setActivitiesAsync("http://localhost:8000/activities"))
     },
     [],
   );
   const filterActivities = (activity, dayOfTheMonth) => {
     const currentDay =
-      new Date(`2021-${('0' + dayOfTheMonth.month).slice(-2)}-${('0' + dayOfTheMonth.dayNumber).slice(-2)}`)
+      new Date(`2022-${('0' + dayOfTheMonth.month).slice(-2)}-${('0' + dayOfTheMonth.dayNumber).slice(-2)}`)
     return new Date(activity.startDate) <= currentDay && new Date(activity.endDate) >= currentDay
   }
 
@@ -340,7 +325,7 @@ const CoursesCalendar = ({ gymId, userId }) => {
         value={selectedMonth}
         options={months}
         onChange={changeMonth} />
-      <p>2021</p>
+      <p>2022</p>
     </div>
 
     <div className="calendar">

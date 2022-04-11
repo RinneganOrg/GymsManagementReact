@@ -1,52 +1,80 @@
-const initialState = {
-  comments: []
-  //  [
-  //   {
-  //     id: 1,
-  //     gymId: 1,
-  //     trainerId: 1,
-  //     userId: 1,
-  //     courseId: 1,
-  //     comment: "Great Chilly",
-  //     rating: 3
-  //   },
-  //   {
-  //     id: 2,
-  //     gymId: 1,
-  //     trainerId: 1,
-  //     userId: 2,
-  //     courseId: 1,
-  //     comment: "Amazing Chilly at WorldClass",
-  //     rating: 4
-  //   },
-  //   {
-  //     id: 3,
-  //     gymId: 2,
-  //     trainerId: 2,
-  //     userId: 3,
-  //     courseId: 2,
-  //     comment: "Wonderful Reece at FitClass",
-  //     rating: 5
-  //   }
-  // ]
+import { createSlice } from '@reduxjs/toolkit'
+
+export const commentReducer = createSlice({
+  name: 'comments',
+  initialState: {
+    comments: []
+  },
+  reducers: {
+    setComments: (state, action) => {
+      state.comments = action.payload
+    },
+    addComment: (state, action) => {
+      state.comments = [...state.comments, { ...action.payload, id: state.comments.length + 1 }]
+    },
+    editComment: (state, action) => {
+      state.comments = state.comments.map((comment) => comment._id === action.payload._id ? action.payload : comment)
+    },
+    deleteComment: (state, action) => {
+      state.comments = state.comments.filter(comment => comment._id !== action.payload._id)
+    }
+  },
+})
+
+export const { setComments, addComment, editComment, deleteComment } = commentReducer.actions
+
+export const setCommentsAsync = (url) => (dispatch) => {
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(setComments(result.data))
+    })
+  }
+
+export const addCommentAsync = (url, body) => (dispatch) => {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(addComment(result.addedComment))
+    })
 }
 
-export default function addComment(state = initialState, action) {
-  switch (action.type) {
-    case 'ADD_COMMENT':
-      return { ...state, comments: [...state.comments, { ...action.comment, id: state.comments.length + 1 }] }
-    case 'SET_COMMENTS':
-      return { ...state, comments: action.comments }
-    case 'EDIT_COMMENT':
-      return { ...state, comments: state.comments.map((comment) => comment._id === action.comment._id ? action.comment : comment) }
-    case 'DELETE_COMMENT':
-      return { ...state, comments: state.comments.filter(comment => comment._id !== action.comment._id) }
-    // Case 1 
-    // const indexOfComment = state.comments.indexOf( action.comment )
-    // return { ...state, comments: [...state.comments.slice(0, indexOfComment), ...state.comments.slice(indexOfComment + 1)]  }
-    // Case 2
-    // return { ...state, comments: state.comments.filter(comment => comment.id !== action.comment.id)}
-    default:
-      return state
-  }
+export const editCommentAsync = (url, body) => (dispatch) => {
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(editComment(result.editedComment))
+    })
 }
+
+export const deleteCommentAsync = (url) => (dispatch) => {
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(deleteComment(result.data))
+    })
+}
+
+export default commentReducer.reducer

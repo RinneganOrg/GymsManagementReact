@@ -1,15 +1,14 @@
 import React from 'react'
-import { useHistory } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useDispatch } from 'react-redux'
-import { signOut } from '../store/actions/users'
+import { signOut } from '../store/reducers/users'
 import { Dropdown } from 'semantic-ui-react'
-import { Link } from "react-router-dom";
 import { useAuth } from '../Utils/context';
 
 function AuthButton() {
 
-  const history = useHistory();
-  let auth = useAuth()
+  const navigate = useNavigate();
+  const auth = useAuth()
   const dispatch = useDispatch()
   return auth ?
     <Dropdown.Item
@@ -17,7 +16,7 @@ function AuthButton() {
       text='Sign Out'
       onClick={() => {
         dispatch(signOut())
-        history.push("/signin")
+        navigate("/signin")
       }
       }
     /> :

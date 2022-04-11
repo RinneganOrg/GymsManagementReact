@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Portal } from "react-portal";
 import { useSelector, useDispatch } from "react-redux";
 import EditButton from "../buttons/EditButton";
@@ -18,33 +18,29 @@ import {
 } from "semantic-ui-react";
 import CoursesCalendar from "../CoursesCalendar";
 import "../../gymsStyle.css";
-import { setGyms } from "../../store/actions/gyms";
+import { setGymsAsync } from "../../store/reducers/gyms";
 import ModalActivity from "../ModalActivity";
 import { useAuth } from "../../Utils/context";
 
 const Gym = () => {
   const { gymId } = useParams();
   const dispatch = useDispatch();
+  const auth = useAuth();
   const gymToDisplay = useSelector((state) =>
     state.gyms.gyms.find((gym) => gym._id + "" === gymId)
   );
-  const location = useLocation();
   const selectIsToolbarReady = (state) => state.toolbar;
   const { isToolbarReady } = useSelector(selectIsToolbarReady);
-
-  const [selectedMonth, setSelectedMonth] = useState(1);
   const [displayedSection, setDisplayedSection] = useState("reviews");
 
-  const handleChangeCourseBars = (month) => {
-    setSelectedMonth(month);
-  };
   const changeDisplayedSection = (section) => {
     setDisplayedSection(section);
   };
-  let auth = useAuth();
+
   useEffect(() => {
-    dispatch(setGyms());
+    dispatch(setGymsAsync("http://localhost:8000/gyms"));
   }, []);
+
   return (
     <>
       {gymToDisplay ? (
@@ -119,16 +115,16 @@ const Gym = () => {
               {document.getElementById("operationSection") ? (
                 <Portal node={document.getElementById("operationSection")}>
                   <Menu.Item>
-                    <EditButton path={location.pathname} />
+                    <EditButton />
                   </Menu.Item>
                 </Portal>
               ) : null}
               <Portal node={document.getElementById("childrenSection")}>
                 <Menu.Item>
-                  <AccessTrainersButton path={location.pathname} />
+                  <AccessTrainersButton />
                 </Menu.Item>
                 <Menu.Item>
-                  <AccessCoursesButton path={location.pathname} />
+                  <AccessCoursesButton />
                 </Menu.Item>
               </Portal>
               <Portal node={document.getElementById("contentSection")}>

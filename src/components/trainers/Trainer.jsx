@@ -1,24 +1,23 @@
 import React, {useEffect} from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Portal } from 'react-portal'
 import { useSelector, useDispatch } from 'react-redux'
 import EditButton from '../buttons/EditButton';
 import Comments from "../comments/Comments";
 import { Image, Menu, Button, Grid, Divider, Header } from 'semantic-ui-react'
 import '../../trainersStyle.css'
-import { setTrainers } from '../../store/actions/trainers'
+import { setTrainersAsync } from '../../store/reducers/trainers'
 
 const Trainer = () => {
   let { trainerId, gymId, courseId } = useParams()
   const trainerToDisplay = useSelector(state =>
     state.trainers.trainers.find(trainer => trainer._id + '' === trainerId))
-  const location = useLocation()
   const dispatch = useDispatch()
   const selectIsToolbarReady = state => state.toolbar
   const { isToolbarReady } = useSelector(selectIsToolbarReady)
   useEffect(
     () => {
-      dispatch(setTrainers(`http://localhost:8000/trainers`))
+      dispatch(setTrainersAsync(`http://localhost:8000/trainers`))
     }
     ,
     []
@@ -66,7 +65,7 @@ const Trainer = () => {
         <>
           <Portal node={document.getElementById("operationSection")}>
             <Menu.Item>
-              <EditButton path={location.pathname} />
+              <EditButton />
             </Menu.Item>
           </Portal>
         </>

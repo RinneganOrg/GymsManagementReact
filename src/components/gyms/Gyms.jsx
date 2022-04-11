@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Link,
-  useRouteMatch,
-  useLocation
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { Card, Image, List, Menu, Rating, Input, Dropdown } from 'semantic-ui-react'
 import AddButton from '../buttons/AddButton';
 import { Portal } from 'react-portal'
-import { setGyms } from '../../store/actions/gyms'
+import { setGymsAsync } from '../../store/reducers/gyms'
 
 const Gyms = () => {
-  const location = useLocation()
   const dispatch = useDispatch()
   const selectGyms = state => state.gyms
   const selectIsToolbarReady = state => state.toolbar
@@ -57,11 +52,10 @@ const Gyms = () => {
       return gym1.reviews.length > gym2.reviews.length ? 1 : -1
     }
   }
-  let { url } = useRouteMatch();
 
   useEffect(
     () => {
-      dispatch(setGyms())
+      dispatch(setGymsAsync("http://localhost:8000/gyms"))
     }
     ,
     []
@@ -132,7 +126,7 @@ const Gyms = () => {
               <List.Item key={gym._id}>
                 <Image avatar src={gym.image} />
                 <List.Content>
-                  <List.Header as={Link} to={`${url}/${gym._id}`}>{gym.name}</List.Header>
+                  <List.Header as={Link} to={`${gym._id}`}>{gym.name}</List.Header>
                   <List.Description>{gym.address}</List.Description>
                   <Rating icon='star' defaultRating={gym.rating} maxRating={5} disabled />
                 </List.Content>
@@ -146,7 +140,7 @@ const Gyms = () => {
           <Card.Group itemsPerRow={3}>
             {gyms && gyms.length >= 0 ? gyms.filter(gym => filterGyms(gym)).sort((gym1, gym2) => orderGyms(gym1, gym2)).map((gym) => (
               <Card key={gym._id}>
-                <Image src={gym.image} as={Link} to={`${url}/${gym._id}`} wrapped ui={false} />
+                <Image src={gym.image} as={Link} to={`${gym._id}`} wrapped ui={false} />
                 <Card.Content>
                   <Card.Header>{gym.name}</Card.Header>
                   <Card.Description>{gym.address}</Card.Description>
@@ -166,7 +160,7 @@ const Gyms = () => {
       {isToolbarReady && document.getElementById("operationSection") &&
         <Portal node={document.getElementById("operationSection")}>
           <Menu.Item>
-            <AddButton path={location.pathname} />
+            <AddButton />
           </Menu.Item>
         </Portal>}
     </div>

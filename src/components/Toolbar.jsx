@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Menu, Dropdown } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import { useDispatch } from 'react-redux'
-import { toolbarIsReady } from '../store/actions/toolbar'
+import { toolbarIsReady } from '../store/reducers/toolbar'
 import AuthButton from './AuthButton';
 import { useAuth } from '../Utils/context';
 

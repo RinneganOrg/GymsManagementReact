@@ -1,57 +1,64 @@
-const initialState = {
-  trainers: [],
-    // [
-    //   {
-    //     id: 1,
-    //     name: "Ben Chilwell",
-    //     description: `Te eum doming eirmod, nominati pertinacia argumentum ad his. Ex eam alia
-    //   facete scriptorem, est autem aliquip detraxit at. Usu ocurreret
-    //   referrentur at, cu epicurei appellantur vix. Cum ea laoreet recteque
-    //   electram, eos choro alterum definiebas in. Vim dolorum definiebas an. Mei
-    //   ex natum rebum iisque.Te eum doming eirmod, nominati pertinacia argumentum ad his. Ex eam alia
-    //   facete scriptorem, est autem aliquip detraxit at. Usu ocurreret
-    //   referrentur at, cu epicurei appellantur vix. Cum ea laoreet recteque
-    //   electram, eos choro alterum definiebas in. Vim dolorum definiebas an. Mei
-    //   ex natum rebum iisque.`,
-    //     image: "https://i2-prod.football.london//article20557091.ece/ALTERNATES/s1200c/0_Chilwell.jpg",
-    //     tags: ["#hiit", "#abs"],
-    //     rating: 4,
-    //     reviews: ["cool guy", "amazing", "wow"],
-    //     gymId: 2
-    //   },
-    //   {
-    //     id: 2,
-    //     name: "Reece James",
-    //     description: `Audiam quaerendum eu sea, pro omittam definiebas ex. Te est latine
-    //   definitiones. Quot wisi nulla ex duo. Vis sint solet expetenda ne, his te
-    //   phaedrum referrentur consectetuer. Id vix fabulas oporteat, ei quo vide
-    //   phaedrum, vim vivendum maiestatis in. Te eum doming eirmod, nominati pertinacia argumentum ad his. Ex eam alia
-    //   facete scriptorem, est autem aliquip detraxit at. Usu ocurreret
-    //   referrentur at, cu epicurei appellantur vix. Cum ea laoreet recteque
-    //   electram, eos choro alterum definiebas in. Vim dolorum definiebas an. Mei
-    //   ex natum rebum iisque.`,
-    //     image: "https://bet-bet.net/wp-content/uploads/2020/12/Reece-James.png",
-    //     tags: ["#strength", "#muscles"],
-    //     rating: 5,
-    //     reviews: ["amazing trainer", "funny trainer"],
-    //     gymId: 2
-    //   }]
-  currentTrainer: null
+import { createSlice } from '@reduxjs/toolkit'
+
+export const trainerReducer = createSlice({
+  name: 'trainers',
+  initialState: {
+    trainers: []
+  },
+  reducers: {
+    setTrainers: (state, action) => {
+      state.trainers = action.payload
+    },
+    addTrainer: (state, action) => {
+      state.trainers = [...state.trainers, { ...action.payload }] 
+    },
+    editTrainer: (state, action) => {
+      state.trainers = state.trainers.map((trainer) => trainer._id === action.payload._id ? action.payload : trainer) 
+    }
+  },
+})
+
+export const { setTrainers, addTrainer, editTrainer } = trainerReducer.actions
+
+export const setTrainersAsync = (url) => (dispatch) => {
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(setTrainers(result.data))
+    })
 }
 
-export default function addTrainer(state = initialState, action) {
-  switch (action.type) {
-    case 'SET_TRAINERS':
-      return {
-        ...state, trainers: action.trainers
-      }
-    case 'SET_TRAINER':
-      return { ...state, currentTrainer: action.trainer }
-    case 'ADD_TRAINER':
-      return { ...state, trainers: [...state.trainers, { ...action.trainer }] }
-    case 'EDIT_TRAINER':
-      return { ...state, trainers: state.trainers.map((trainer) => trainer._id === action.trainer._id ? action.trainer : trainer) }
-    default:
-      return state
-  }
+export const addTrainerAsync = (url, body) => (dispatch) => {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(addTrainer(result.addedTrainer))
+    })
 }
+
+export const editTrainerAsync = (url, body) => (dispatch) => {
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(editTrainer(result.editedTrainer))
+    })
+}
+
+export default trainerReducer.reducer

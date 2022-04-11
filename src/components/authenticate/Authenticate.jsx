@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import {
-  useHistory,
+  useNavigate,
   useLocation,
   Link
 } from "react-router-dom";
 import { Button, Form, Input, Card, Icon, Dropdown, Message } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
-import { signUp, signIn } from '../../store/actions/users'
+import { signUp, signIn } from '../../store/reducers/users'
 import { useCookies } from "react-cookie";
 
 const roleOptions = [
@@ -21,13 +21,13 @@ const roleOptions = [
     value: 'admin',
   }]
 const Authenticate = ({ mode }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   let { from } = location.state || { from: { pathname: "/gyms" } };
   const dispatch = useDispatch()
   const authenticateMode = {
-    signIn: () => dispatch(signIn({ email, password })),
-    signUp: () => dispatch(signUp({ email, password, repeatPassword, role }))
+    signIn: () => dispatch(signIn("http://localhost:8000/users/signin", { email, password })),
+    signUp: () => dispatch(signUp("http://localhost:8000/users/signup", { email, password, repeatPassword, role }))
   }
 
   const [cookies, setCookie] = useCookies(["name"]);
@@ -35,7 +35,7 @@ const Authenticate = ({ mode }) => {
     authenticateMode[mode]().then((response) => {
       setCookie("token", response.accessToken);
       if (response.status) {
-        history.replace(from)
+        navigate(from, {replace: true})
       }
       else setMessage(response.message)
     })

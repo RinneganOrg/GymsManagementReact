@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Switch,
-  Route,
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Authenticate from './authenticate/Authenticate'
 import Gyms from './gyms/Gyms'
 import Trainers from './trainers/Trainers'
@@ -18,76 +15,126 @@ import Course from './courses/Course'
 import PrivateRoute from './PrivateRoute'
 
 const TheRouter = () => {
-
   return (
-    <Switch>
-      <Route path="/signin">
-        <Authenticate mode="signIn" />
+    <Routes>
+      <Route
+        path="signin" 
+        element={<Authenticate mode="signIn" />}>
       </Route>
-      <Route path="/signup">
-        <Authenticate mode = "signUp"/>
+      <Route 
+        path="signup"
+        element = {<Authenticate mode = "signUp" />}>
       </Route>
-      <Route exact path="/gyms">
-        <Gyms />
+      <Route path="gyms">
+        <Route index element={<Gyms />}/>
+        <Route path=":gymId">
+          <Route index element={<Gym />}/>
+          <Route
+            path="edit"
+            element= {
+              <PrivateRoute>
+                <GymForm mode="edit" />
+              </PrivateRoute>
+            }/> 
+          <Route path="trainers">
+            <Route index element={<Trainers />}/>
+            <Route path=":trainerId">
+              <Route index element={<Trainer />}/>
+              <Route
+                path="edit"
+                element= {
+                  <PrivateRoute>
+                    <TrainerForm mode="edit" />
+                  </PrivateRoute>
+                }/> 
+            </Route>
+            <Route
+            path="add"
+            element= {
+              <PrivateRoute>
+                <TrainerForm mode="add" />
+              </PrivateRoute>
+            }/>
+        </Route>
+        <Route path="courses">
+          <Route index element={<Courses />}/>
+          <Route path=":courseId">
+            <Route index element={<Course />}/>
+            <Route
+              path="edit"
+              element= {
+                <PrivateRoute>
+                  <CourseForm mode="edit" />
+                </PrivateRoute>
+              }/>
+            <Route path="trainers">
+              <Route path=":trainerId">
+                <Route index element={<Trainer />}/>
+                <Route
+                  path="edit"
+                  element= {
+                  <PrivateRoute>
+                    <TrainerForm mode="edit" />
+                  </PrivateRoute>
+                  }/>
+              </Route>
+            </Route>
+            </Route>
+          <Route
+            path="add"
+            element= {
+              <PrivateRoute>
+                <CourseForm mode="add" />
+              </PrivateRoute>
+            }/>
+        </Route>
       </Route>
-      <Route exact path="/trainers">
-        <Trainers />
+      <Route 
+          path="add" 
+          element= {
+            <PrivateRoute>
+              <GymForm mode="add" />
+            </PrivateRoute>
+          }/>
       </Route>
-      <PrivateRoute path="/trainers/add">
-        <TrainerForm mode="add" />
-      </PrivateRoute>
-      <Route exact path="/trainers/:trainerId">
-        <Trainer />
+      <Route path="trainers">
+        <Route index element={<Trainers />}/>
+        <Route path=":trainerId" >
+          <Route index element={<Trainer />}/>
+          <Route
+            path="edit"
+            element= {
+              <PrivateRoute>
+                <TrainerForm mode="edit" />
+              </PrivateRoute>
+            }/> 
+        </Route>
+        <Route 
+          path="add" 
+          element= {
+            <PrivateRoute>
+              <TrainerForm mode="add" />
+            </PrivateRoute>
+          }/>
       </Route>
-      <PrivateRoute path="/trainers/:trainerId/edit">
-        <TrainerForm mode="edit" />
-      </PrivateRoute>
-      <PrivateRoute path="/users">
-        <Users />
-      </PrivateRoute>
-      <PrivateRoute path="/profile/:userId">
-        <Profile />
-      </PrivateRoute>
-      <PrivateRoute path="/gyms/add">
-        <GymForm mode="add" />
-      </PrivateRoute>
-      <Route exact path="/gyms/:gymId">
-        <Gym />
+      <Route 
+        path="users" 
+        element= {
+          <PrivateRoute>
+            <Users />
+          </PrivateRoute>
+        }>
       </Route>
-      <PrivateRoute path="/gyms/:gymId/edit">
-        <GymForm mode="edit" />
-      </PrivateRoute>
-      <Route exact path="/gyms/:gymId/trainers">
-        <Trainers />
+      <Route path="profile">
+        <Route
+        path=":userId" 
+        element= {
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        }/>
       </Route>
-      <PrivateRoute path="/gyms/:gymId/trainers/add">
-        <TrainerForm mode="add" />
-      </PrivateRoute>
-      <Route exact path="/gyms/:gymId/trainers/:trainerId">
-        <Trainer />
-      </Route>
-      <PrivateRoute path="/gyms/:gymId/trainers/:trainerId/edit">
-        <TrainerForm mode="edit" />
-      </PrivateRoute>
-      <Route exact path="/gyms/:gymId/courses">
-        <Courses />
-      </Route>
-      <PrivateRoute path="/gyms/:gymId/courses/add">
-        <CourseForm mode="add" />
-      </PrivateRoute>
-      <Route exact path="/gyms/:gymId/courses/:courseId">
-        <Course />
-      </Route>
-      <Route exact path="/gyms/:gymId/courses/:courseId/trainers/:trainerId">
-        <Trainer />
-      </Route>
-      <PrivateRoute exact path="/gyms/:gymId/courses/:courseId/trainers/:trainerId/edit">
-        <TrainerForm mode="edit" />
-      </PrivateRoute>
-      <PrivateRoute path="/gyms/:gymId/courses/:courseId/edit">
-        <CourseForm mode="edit" />
-      </PrivateRoute>
-    </Switch>
+    </Routes>
   )
 }
 export default TheRouter;

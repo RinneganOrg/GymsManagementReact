@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Portal } from 'react-portal'
 import { useSelector, useDispatch } from 'react-redux'
 import EditButton from '../buttons/EditButton';
 import Comments from "../comments/Comments";
 import { Image, Menu, List, Header, Button, Label, Grid, Divider } from 'semantic-ui-react'
-import { Link } from "react-router-dom";
 import '../../coursesStyle.css';
-import { setTrainers } from '../../store/actions/trainers'
-import { setCourses } from '../../store/actions/courses'
+import { setTrainersAsync } from '../../store/reducers/trainers'
+import { setCoursesAsync } from '../../store/reducers/courses'
 
 
 const Course = () => {
@@ -22,16 +21,15 @@ const Course = () => {
     state.trainers.trainers
     .filter(trainer => courseToDisplay.trainersId.includes(trainer._id))
   )
-  const location = useLocation()
   const selectIsToolbarReady = state => state.toolbar
   const { isToolbarReady } = useSelector(selectIsToolbarReady)
 
   useEffect(
     () => {
-      dispatch(setCourses(
+      dispatch(setCoursesAsync(
         `http://localhost:8000/courses`
       ))
-        dispatch(setTrainers(
+        dispatch(setTrainersAsync(
           `http://localhost:8000/trainers`
         ))
     }
@@ -100,7 +98,7 @@ const Course = () => {
             {trainersToDisplay && trainersToDisplay.map(trainer =>
               <List.Item
                 as={Link}
-                to={`${location.pathname}/trainers/${trainer._id}`}
+                to={`trainers/${trainer._id}`}
                 key={trainer._id} >
                 <Image avatar src={trainer.image} />
                 <List.Content>
@@ -118,7 +116,7 @@ const Course = () => {
         <>
           <Portal node={document.getElementById("operationSection")}>
             <Menu.Item>
-              <EditButton path={location.pathname} />
+              <EditButton />
             </Menu.Item>
           </Portal>
         </>

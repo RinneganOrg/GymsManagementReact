@@ -1,19 +1,71 @@
-const initialState = {
-  users: null,
-  usersList: []
+import { createSlice } from '@reduxjs/toolkit'
+
+export const userReducer = createSlice({
+  name: 'users',
+  initialState: {
+    users: null,
+    usersList: []
+  },
+  reducers: {
+    setUsers: (state, action) => {
+      state.usersList = action.payload
+    },
+    authenticate: (state, action) => {
+      state.users = action.payload
+    },
+    signOut: (state) => {
+      state.users = null
+    }
+  },
+})
+
+export const { setUsers, authenticate, signOut } = userReducer.actions
+
+export const setUsersAsync = (url) => (dispatch) => {
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(setUsers(result.data))
+    })
 }
 
-export default function addUser(state = initialState, action) {
-  switch (action.type) {
-    case 'SET_USERS':
-      return {
-        ...state, usersList: action.users
-      }
-    case 'AUTHENTICATE':
-      return { ...state, users: action.user }
-    case 'SIGN_OUT':
-      return { ...state, users: null }
-    default:
-      return state
-  }
+export const signUp = (url, body) => (dispatch) => {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(authenticate(result.user))
+      return { message: result.message, status: result.success }
+    })
 }
+
+export const signIn = (url, body) => (dispatch) => {
+  return fetch(url, {
+    credentials: "same-origin",
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(authenticate(result.user))
+      return {
+        message: result.message,
+        status: result.success,
+        accessToken: result.accessToken
+      }
+    })
+}
+export default userReducer.reducer

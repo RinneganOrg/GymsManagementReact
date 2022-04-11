@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setActivities } from "../../store/actions/activities";
-import { setCourses } from "../../store/actions/courses";
-import { setTrainers } from "../../store/actions/trainers";
+import { setActivitiesAsync } from "../../store/reducers/activities";
+import { setCoursesAsync } from "../../store/reducers/courses";
+import { setTrainersAsync } from "../../store/reducers/trainers";
 import AttenanceGraph from "./AttendanceGraph";
 import RevenueGraph from "./RevenueGraph";
 
@@ -11,7 +11,7 @@ function Graphs({ gymId, modal }) {
   const [currentColor, setCurrentColor] = useState(null);
 
   const dispatch = useDispatch();
-  const activities = useSelector((state) =>
+  const activities = useSelector(state =>
     state.activities.activities.filter(
       (activity) => activity.gymId + "" === gymId
     )
@@ -28,9 +28,9 @@ function Graphs({ gymId, modal }) {
     }))
   );
   useEffect(() => {
-    dispatch(setCourses(`http://localhost:8000/courses`));
-    dispatch(setTrainers(`http://localhost:8000/trainers`));
-    dispatch(setActivities());
+    dispatch(setCoursesAsync(`http://localhost:8000/courses`));
+    dispatch(setTrainersAsync(`http://localhost:8000/trainers`));
+    dispatch(setActivitiesAsync("http://localhost:8000/activities"));
   }, []);
   return (
     <>
